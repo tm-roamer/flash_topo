@@ -1,0 +1,959 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>官网api参考(完整说明)</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">官网api参考(完整说明)</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#官网api参考">官网api参考</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#addContextMenuItem_添加右键菜单">addContextMenuItem 添加右键菜单</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#addDataField_动态绑定一个自定义字段">addDataField 动态绑定一个自定义字段</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#addEdge_添加连线">addEdge 添加连线</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#addElements_批量添加节点和连线">addElements 批量添加节点和连线</a></div>
+</li>
+<li>
+<div><span class="num">6</span><a href="#addListener_添加监听">addListener 添加监听</a></div>
+</li>
+<li>
+<div><span class="num">7</span><a href="#addNode_添加节点">addNode 添加节点</a></div>
+</li>
+<li>
+<div><span class="num">8</span><a href="#childNodes_查询所有子节点(返回Arraynode)">childNodes 查询所有子节点(返回Arraynode)</a></div>
+</li>
+<li>
+<div><span class="num">9</span><a href="#customCursorsEnabled_是否启用自定义光标">customCursorsEnabled  是否启用自定义光标</a></div>
+</li>
+<li>
+<div><span class="num">10</span><a href="#dataSchema_取得配置的自定义字段">dataSchema  取得配置的自定义字段</a></div>
+</li>
+<li>
+<div><span class="num">11</span><a href="#deselect_取消选中">deselect 取消选中</a></div>
+</li>
+<li>
+<div><span class="num">12</span><a href="#draw_绘制方法,!!!!非常重要!!!!">draw 绘制方法,!!!!非常重要!!!!</a></div>
+</li>
+<li>
+<div><span class="num">13</span><a href="#edge_取得连线">edge 取得连线</a></div>
+</li>
+<li>
+<div><span class="num">14</span><a href="#edgeLabelsVisible_动态控制连线标签是否可见">edgeLabelsVisible 动态控制连线标签是否可见</a></div>
+</li>
+<li>
+<div><span class="num">15</span><a href="#edges_取得所有连线">edges 取得所有连线</a></div>
+</li>
+<li>
+<div><span class="num">16</span><a href="#edgesMerged_动态合并线的样式">edgesMerged 动态合并线的样式</a></div>
+</li>
+<li>
+<div><span class="num">17</span><a href="#edgeTooltipsEnabled_动态控制连线悬停提示是否显示">edgeTooltipsEnabled 动态控制连线悬停提示是否显示</a></div>
+</li>
+<li>
+<div><span class="num">18</span><a href="#embedSWF_返回flash对象">embedSWF 返回flash对象</a></div>
+</li>
+<li>
+<div><span class="num">19</span><a href="#exportNetwork_导出">exportNetwork 导出</a></div>
+</li>
+<li>
+<div><span class="num">20</span><a href="#filter_过滤_!!!!!非常实用!!!!!!">filter 过滤 !!!!!非常实用!!!!!!</a></div>
+</li>
+<li>
+<div><span class="num">21</span><a href="#firstNeighbors_返回关联节点的邻居节点">firstNeighbors 返回关联节点的邻居节点</a></div>
+</li>
+<li>
+<div><span class="num">22</span><a href="#graphml_返回XML文本字符串格式的数据">graphml 返回XML文本字符串格式的数据</a></div>
+</li>
+<li>
+<div><span class="num">23</span><a href="#hasListener_判断是否有哪个类型监听">hasListener 判断是否有哪个类型监听</a></div>
+</li>
+<li>
+<div><span class="num">24</span><a href="#layout_动态设置布局">layout 动态设置布局</a></div>
+</li>
+<li>
+<div><span class="num">25</span><a href="#mergedEdges_返回合并线数组">mergedEdges 返回合并线数组</a></div>
+</li>
+<li>
+<div><span class="num">26</span><a href="#networkModel_返回json格式的数据">networkModel 返回json格式的数据</a></div>
+</li>
+<li>
+<div><span class="num">27</span><a href="#node_取得节点">node 取得节点</a></div>
+</li>
+<li>
+<div><span class="num">28</span><a href="#nodeLabelsVisible_节点标签是否可见">nodeLabelsVisible 节点标签是否可见</a></div>
+</li>
+<li>
+<div><span class="num">29</span><a href="#nodes_返回所有节点或第一层节点">nodes 返回所有节点或第一层节点</a></div>
+</li>
+<li>
+<div><span class="num">30</span><a href="#nodeTooltipsEnabled_是否显示节点悬停提示">nodeTooltipsEnabled 是否显示节点悬停提示</a></div>
+</li>
+<li>
+<div><span class="num">31</span><a href="#panBy_移动topo图">panBy 移动topo图</a></div>
+</li>
+<li>
+<div><span class="num">32</span><a href="#panEnabled_点击节点停留一段时间,是否拖动关联节点">panEnabled 点击节点停留一段时间,是否拖动关联节点</a></div>
+</li>
+<li>
+<div><span class="num">33</span><a href="#panToCenter_移动topo图到中央">panToCenter 移动topo图到中央</a></div>
+</li>
+<li>
+<div><span class="num">34</span><a href="#panZoomControlVisible_控制台是否显示">panZoomControlVisible 控制台是否显示</a></div>
+</li>
+<li>
+<div><span class="num">35</span><a href="#parentNodes_返回父节点数组">parentNodes 返回父节点数组</a></div>
+</li>
+<li>
+<div><span class="num">36</span><a href="#pdf_返回PDF格式">pdf 返回PDF格式</a></div>
+</li>
+<li>
+<div><span class="num">37</span><a href="#png_返回网络为PNG图像">png 返回网络为PNG图像</a></div>
+</li>
+<li>
+<div><span class="num">38</span><a href="#ready_topo图初始化完执行的回调函数">ready topo图初始化完执行的回调函数</a></div>
+</li>
+<li>
+<div><span class="num">39</span><a href="#removeAllContextMenuItems_移除所有鼠标右击菜单">removeAllContextMenuItems 移除所有鼠标右击菜单</a></div>
+</li>
+<li>
+<div><span class="num">40</span><a href="#removeContextMenuItem_移除绑定的右击菜单">removeContextMenuItem 移除绑定的右击菜单</a></div>
+</li>
+<li>
+<div><span class="num">41</span><a href="#removeDataField_删除自定义字段">removeDataField 删除自定义字段</a></div>
+</li>
+<li>
+<div><span class="num">42</span><a href="#removeEdge_删除连线">removeEdge 删除连线</a></div>
+</li>
+<li>
+<div><span class="num">43</span><a href="#removeElements_删除元素">removeElements 删除元素</a></div>
+</li>
+<li>
+<div><span class="num">44</span><a href="#removeFilter_删除过滤器">removeFilter 删除过滤器</a></div>
+</li>
+<li>
+<div><span class="num">45</span><a href="#removeListener_删除监听">removeListener 删除监听</a></div>
+</li>
+<li>
+<div><span class="num">46</span><a href="#removeNode_删除节点">removeNode 删除节点</a></div>
+</li>
+<li>
+<div><span class="num">47</span><a href="#select_选中">select 选中</a></div>
+</li>
+<li>
+<div><span class="num">48</span><a href="#selected_选中组">selected 选中组</a></div>
+</li>
+<li>
+<div><span class="num">49</span><a href="#sif_返回网络数据的交互简单格式（SIF）">sif 返回网络数据的交互简单格式（SIF）</a></div>
+</li>
+<li>
+<div><span class="num">50</span><a href="#svg_返回一个SVG图像">svg 返回一个SVG图像</a></div>
+</li>
+<li>
+<div><span class="num">51</span><a href="#swf_返回Flash对象">swf 返回Flash对象</a></div>
+</li>
+<li>
+<div><span class="num">52</span><a href="#updateData_更新数据">updateData 更新数据</a></div>
+</li>
+<li>
+<div><span class="num">53</span><a href="#visualStyle_返回topo样式或者更新topo样式">visualStyle 返回topo样式或者更新topo样式</a></div>
+</li>
+<li>
+<div><span class="num">54</span><a href="#VisualStyleBypass_轻量级的动态修改样式方式">VisualStyleBypass 轻量级的动态修改样式方式</a></div>
+</li>
+<li>
+<div><span class="num">55</span><a href="#xgmml_返回网络数据作为XGMML">xgmml 返回网络数据作为XGMML</a></div>
+</li>
+<li>
+<div><span class="num">56</span><a href="#zoom_设置topo图的缩放比例">zoom 设置topo图的缩放比例</a></div>
+</li>
+<li>
+<div><span class="num">57</span><a href="#zoomToFit_调整缩放比例,自适应屏幕大小">zoomToFit 调整缩放比例,自适应屏幕大小</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="官网api参考"></a>官网api参考</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>现将Visualization(就是我们的vis对象)提供的所有api整理如下,按照官网提供的字母顺序书写</p>
+<div class="hr"><b></b></div>
+<h1><a name="addContextMenuItem_添加右键菜单"></a>addContextMenuItem 添加右键菜单</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.ready(function () {
+		vis.addContextMenuItem("Select first neighbors", "nodes", 
+			function (evt) {
+				// Get the right-clicked node:
+				var rootNode = evt.target;
+			
+				// Get the first neighbors of that node:
+				var fNeighbors = vis.firstNeighbors([rootNode]);
+				var neighborNodes = fNeighbors.neighbors;
+			
+				// Select the root node and its neighbors:
+				vis.select([rootNode]).select(neighborNodes);
+			}
+		);
+	});
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="addDataField_动态绑定一个自定义字段"></a>addDataField 动态绑定一个自定义字段</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//1 给节点和连线都绑定
+	var field = { name: "url", type: "string", defValue: "http://cytoscapeweb.cytoscape.org/" };
+	vis.addDataField(field);
+	 
+	//2 只给节点绑定
+	var field = { name: "score", type: "number", defValue: 0.15 };
+	vis.addDataField("nodes", field);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="addEdge_添加连线"></a>addEdge 添加连线</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//配置的数据
+	var data = { id: "e10", //必须拥有的字段
+		 source: "n1",		//必须拥有的字段
+		 target: "n4",		//必须拥有的字段
+		 directed: false,	//必须拥有的字段,是否有箭头
+		 label: "Co-expression", //自定义字段配置,可灵活配置
+		 weight: 0.88 };	//自定义字段配置,可灵活配置
+	
+	///*返回添加完的连线*/
+	var edge = vis.addEdge(data, true/*这个值的意思是,true立刻渲染,false不立刻渲染,循环的时候比较有用,当遍历到最后一个的时候设为true一起绘制出来*/);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="addElements_批量添加节点和连线"></a>addElements 批量添加节点和连线</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>这个方法可以设置x,y,一般第一次加载使用addElements比较方便</p>
+<pre>	// 1. 只添加节点,并且id自动(flex自己来控制了,建议自己起个id,这样规则自己清楚,写个小算法,比较容易控制节点)
+	var nodesArray = [ { group: "nodes", x: 10, y: 35 },
+					   { group: "nodes", x: 20, y: 70 } ];
+	var nodes = vis.addElements(nodesArray, true/*true立刻渲染,false不立刻渲染*/);
+	 
+	// 2. 牛逼就牛逼在这里了,可以既添加node,也可以添加edge
+	var array = [ { group: "nodes", x: 10, y: 35, data: { id: "n01" } },
+				  { group: "nodes", x: 20, y: 70, data: { id: "n02" } },
+				  { group: "edges", data: { source: "n01", target: "n02" } } ];
+	var elements /*返回添加完的元素*/ = vis.addElements(array, true/*true立刻渲染,false不立刻渲染*/);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="addListener_添加监听"></a>addListener 添加监听</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//监听控制台的缩放/放大
+	vis.addListener("zoom", function(evt) {
+		var zoom = evt.value;
+		alert("New zoom value is " + (zoom * 100) + "%");
+	})
+	//监听点击连线
+	.addListener("click", "edges", function(evt) {
+		var edge = evt.target;
+		alert("Edge " + edge.data.id + " was clicked");
+	})
+	//监听选中节点
+	.addListener("select", "nodes", function(evt) {
+		var nodes = evt.target;
+		alert(nodes.length + " node(s) selected");
+	});
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="addNode_添加节点"></a>addNode 添加节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 添加一个node1节点
+	var data = { id: "n4",			   //必须拥有的字段,不配置flex也会auto的,为了正常使用,建议必填
+				 label: "MYO2 (Yeast)",//自定义字段配置,可灵活配置
+				 weight: 0.54 };	   //自定义字段配置,可灵活配置
+	var node1 /*返回添加完的节点*/ = vis.addNode(240/*X坐标*/, 360/*Y坐标*/, data, true/*true立刻渲染,false不立刻渲染*/);
+	 
+	// 将node2加入到node1里面,node1将包含node2
+	var node2 /*返回添加完的节点*/ = vis.addNode(node1.x, node1.y, { parent: "n4" }, true/*true立刻渲染,false不立刻渲染*/);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="childNodes_查询所有子节点(返回Arraynode)"></a>childNodes 查询所有子节点(返回Array<a href="node">node</a>)</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//引用上一个例子
+	var data = { id: "n4",			   //必须拥有的字段,不配置flex也会auto的,为了正常使用,建议必填
+				 label: "MYO2 (Yeast)",//自定义字段配置,可灵活配置
+				 weight: 0.54 };	   //自定义字段配置,可灵活配置
+	var node1 /*返回添加完的节点*/ = vis.addNode(240/*X坐标*/, 360/*Y坐标*/, data, true/*true立刻渲染,false不立刻渲染*/);
+	//使用方式
+	var childNodes = vis.childNodes(node1/*节点对象,或者 node1.id也行*/);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="customCursorsEnabled_是否启用自定义光标"></a>customCursorsEnabled  是否启用自定义光标</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.customCursorsEnabled(false /*不启用*/ or true /*启用*/ );
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="dataSchema_取得配置的自定义字段"></a>dataSchema  取得配置的自定义字段</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var schema = vis.dataSchema(); //取得了
+	var nodeFields = schema.nodes; //节点的自定义字段(返回是数组)
+	var edgeFields = schema.edges; //连线的自定义字段(返回是数组)
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="deselect_取消选中"></a>deselect 取消选中</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>deselect ( gr  /*nodes or edges*/, items /*取消选中的元素或者元素id*/ )</p>
+<pre>	// a) 取消连线id在ids里面的:
+	var ids = [4,6,21];
+	vis.deselect("edges", ids);
+	 
+	// b) 取消所有连线选中的第一个
+	var e = vis.selected("edges")[0]; //最后加个判断,选中的连线为0就尿了;
+	vis.deselect([e]);
+	 
+	// c) 取消选中节点和连线的第一个
+	var n = vis.selected("nodes")[0];
+	var e = vis.selected("edges")[0];
+	vis.deselect([n,e]);
+	 
+	// d) 取消选中的所有节点
+	vis.deselect("nodes");
+	 
+	// e) 取消选中的所有连线
+	vis.deselect("edges");
+	 
+	// f) 取消选中的所有节点和连线
+	vis.deselect();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="draw_绘制方法,!!!!非常重要!!!!"></a>draw 绘制方法,!!!!非常重要!!!!</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.draw({
+		network: '&lt;graphml&gt;...&lt;/graphml&gt;' or json, 数据源
+		visualStyle: 参考样式章节
+		layout:	参考布局章节
+		nodeLabelsVisible: 是否显示节点标签
+		edgeLabelsVisible: 是否显示连线标签
+		nodeTooltipsEnabled: 是否显示节点悬停提示
+		edgeTooltipsEnabled: 是否显示连线悬停提示
+		edgesMerged: 取消线的样式
+		panZoomControlVisible 控制台是否显示
+		panZoomControlPosition 控制台的位置
+		preloadImages 预加载图像
+		//官网遗漏的api-------------
+		//http://cytoscapeweb.cytoscape.org/documentation/visualization#section/org.cytoscapeweb.Visualization
+		mouseDownToDragDelay 在flex屏幕按住鼠标左键,可以拖拽屏幕,设置-1是取消,400,800是按住鼠标左键的毫米数
+		panEnabled 点击节点,是否可以拖动关联节点的所以节点,
+	});
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="edge_取得连线"></a>edge 取得连线</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var edge = vis.edge("e10");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="edgeLabelsVisible_动态控制连线标签是否可见"></a>edgeLabelsVisible 动态控制连线标签是否可见</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.edgeLabelsVisible(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="edges_取得所有连线"></a>edges 取得所有连线</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.edges();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="edgesMerged_动态合并线的样式"></a>edgesMerged 动态合并线的样式</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>//例: 2个节点之间多根连线将合并成一根,并且样式只剩下颜色,粗细,没有箭头</p>
+<pre>	vis.edgesMerged(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="edgeTooltipsEnabled_动态控制连线悬停提示是否显示"></a>edgeTooltipsEnabled 动态控制连线悬停提示是否显示</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.edgeTooltipsEnabled(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="embedSWF_返回flash对象"></a>embedSWF 返回flash对象</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.ready(function() {
+		alert(vis.embedSWF() );
+	});
+</pre>
+<p><img src="../imgs/api1.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="exportNetwork_导出"></a>exportNetwork 导出</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	exportNetwork ( format, url, [ options ] )
+	
+	format {String} : One of: "png", "svg", "pdf", "xgmml", "graphml", "sif". //格式化类型
+	
+	url {String} : 导出后的接收地址
+	
+	[ options ] {Object} 
+		width: 所需的图象的像素宽度（仅为PDF格式）。
+		height: 所需的高度的图像中的像素（仅为PDF格式）。
+		nodeattr：可选的节点的属性名称作为出口节点（仅为SIF SIF格式）。
+		interactionattr：可选的边缘属性名称作为出口SIF互动（仅用于“SIF格式）。
+		window: HTML浏览器窗口或框架中显示输出图像或XML,
+			_self：当前窗口中的当前帧。
+			_blank：一个新的窗口。
+			_parent：当前框架的父。
+			_top：在当前窗口的顶层框架。
+			默认 _self.
+</pre>
+<p></p>
+<pre>	JS部分
+	vis.exportNetwork('xgmml', 'export.php?type=xml');  //设置类型
+	
+	后台PHP部分(参考)
+	    &lt;?php
+		# ##### The server-side code in PHP ####
+	 
+		# Type sent as part of the URL:
+		$type = $_GET['type'];		//取得类型
+		# Get the raw POST data:
+		$data = file_get_contents('php://input');		//取得post表单内容
+	 
+		# Set the content type accordingly:
+		if ($type == 'png') {
+			header('Content-type: image/png');
+		} elseif ($type == 'pdf') {
+			header('Content-type: application/pdf');
+		} elseif ($type == 'svg') {
+		   header('Content-type: image/svg+xml');
+		} elseif ($type == 'xml') {
+			header('Content-type: text/xml');
+		} elseif ($type == 'txt') {
+			header('Content-type: text/plain');
+		}
+	 
+		# To force the browser to download the file:	//设置头部
+		header('Content-disposition: attachment; filename="network.' . $type . '"');
+		# Send the data to the browser:
+		print $data;									//返回页面内容
+	?&gt;
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="filter_过滤_!!!!!非常实用!!!!!!"></a>filter 过滤 !!!!!非常实用!!!!!!</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 1. 仅显示所有权重大于等于0.4的
+	vis.filter("edges", function(edge) {
+		return edge.data.weight &gt;= 0.4;
+	}, true/*true立刻渲染,false不立刻渲染*/);
+	 
+	// 2. 仅显示id等于n01,n02的节点
+	vis.filter("nodes", ['n01', 'n02']);
+	 
+	// 3. 隐藏所有节点,当然还有连线
+	vis.filter("nodes", []);
+	 
+	// 4. 隐藏所有节点
+	vis.filter();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="firstNeighbors_返回关联节点的邻居节点"></a>firstNeighbors 返回关联节点的邻居节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//firstNeighbors ( nodes, [ ignoreFilteredOut ] )
+	nodes {Array} : 节点对象数组或者节点id数组
+	[ ignoreFilteredOut ] {Boolean} : true配合上面的filter使用,忽略已经过滤的,默认为false
+	vis.firstNeighbors(['node1','node2']);
+	例子:
+	    A---&gt;B
+		A---&gt;C
+		C---&gt;D
+		var neighborNode = vis.firstNeighbors(["A"], false);
+		//返回对象有下面4个属性
+		neighborNode.rootNodes 		//传递参数节点(就是A)
+		neighborNode.neighbors		//获取A的所有邻居节点(B节点,C节点),因为只取第一层,所以D落选了
+		neighborNode.edges 			//获取A的所有连线(A-&gt;B,A-&gt;C  2根线)
+		neighborNode.mergedEdges 	//获取A的所有连线(A-&gt;B,A-&gt;C  2根线),针对合并线使用
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="graphml_返回XML文本字符串格式的数据"></a>graphml 返回XML文本字符串格式的数据</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.graphml();
+	
+	graphml格式参考如下:
+	&lt;graphml&gt;
+	  &lt;!-- 设置自定义属性*******节点******* --&gt;
+	  &lt;key id="label"    for="node" attr.name="label"    attr.type="string"/&gt;&lt;!--显示标签 --&gt;
+	  .....
+	  &lt;!-- 设置自定义属性*******连线******* --&gt;
+	  &lt;key id="label"    for="edge" attr.name="label"    attr.type="string"/&gt;&lt;!--显示标签 --&gt;
+	  .....
+	  &lt;graph edgedefault="undirected"&gt;&lt;!-- 透过这个变量设定连线方向 directed有方向,undirected无方向--&gt;
+		&lt;!-- 设置节点数据 --&gt;
+		&lt;node id="a01"&gt;&lt;data key="label"&gt;A01&lt;/data&gt;&lt;data key="imgtype"&gt;img/node1.png&lt;/data&gt;&lt;data key="x"&gt;100&lt;/data&gt;&lt;data key="y"&gt;100&lt;/data&gt;&lt;/node&gt;
+		.....
+		&lt;!-- 设置连线数据 --&gt;
+		&lt;edge target="a01" source="a02" directed="false"&gt;&lt;data key="weight"&gt;2&lt;/data&gt;&lt;data key="label"&gt;a01 (15) a02&lt;/data&gt;&lt;/edge&gt;
+		.....
+	  &lt;/graph&gt;
+	&lt;/graphml&gt;
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="hasListener_判断是否有哪个类型监听"></a>hasListener 判断是否有哪个类型监听</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	val bool = vis.hasListener("click","nodes"); //节点
+	val bool = vis.hasListener("click","edges"); //连线
+	val bool = vis.hasListener("click","none"); //全局面板
+	val bool = vis.hasListener("click"); //全局面板
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="layout_动态设置布局"></a>layout 动态设置布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 2. 取得布局
+	var layout = vis.layout(); // returns: { name: 'Circle', options: { angleWidth: 360 } };
+	 
+	// 3. 设置布局:
+	vis.layout('ForceDirected');
+	 
+	// 4. 带参数设置布局:
+	var options = {
+		 drag:          0.2,
+		 gravitation:   -200,
+		 minDistance:   1,
+		 maxDistance:   400,
+		 mass:          2,
+		 tension:       0.2,
+		 weightAttr:    "weight",
+		 restLength:    100,
+		 iterations:    200,
+		 maxTime:       10000,
+		 autoStabilize: false
+	};
+	vis.layout({ name: 'ForceDirected', options: options });
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="mergedEdges_返回合并线数组"></a>mergedEdges 返回合并线数组</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var edges = vis.mergedEdges();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="networkModel_返回json格式的数据"></a>networkModel 返回json格式的数据</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var data = vis.networkModel();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="node_取得节点"></a>node 取得节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var node = vis.node("n4"); //参数为节点id
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="nodeLabelsVisible_节点标签是否可见"></a>nodeLabelsVisible 节点标签是否可见</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.nodeLabelsVisible(true or false);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="nodes_返回所有节点或第一层节点"></a>nodes 返回所有节点或第一层节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	nodes ( [ topLevelOnly ] )
+	topLevelOnly: true返回第一层节点,隐藏子节点, 默认false, 返回全部节点.
+	vis.nodes();
+	vis.nodes(true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="nodeTooltipsEnabled_是否显示节点悬停提示"></a>nodeTooltipsEnabled 是否显示节点悬停提示</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.nodeTooltipsEnabled(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="panBy_移动topo图"></a>panBy 移动topo图</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.panBy(500,0);  //水平左移500px
+	vis.panBy(-500,0); //水平右移500px
+	vis.panBy(0,200);  //垂直上移200px
+	vis.panBy(0,-200); //垂直下移200px
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="panEnabled_点击节点停留一段时间,是否拖动关联节点"></a>panEnabled 点击节点停留一段时间,是否拖动关联节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//经过测试,貌似这个方法不可用,panEnabled应该是在vis.draw()里面配置的.
+	vis.panEnabled(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="panToCenter_移动topo图到中央"></a>panToCenter 移动topo图到中央</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.panToCenter();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="panZoomControlVisible_控制台是否显示"></a>panZoomControlVisible 控制台是否显示</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.panZoomControlVisible(false or true);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="parentNodes_返回父节点数组"></a>parentNodes 返回父节点数组</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.parentNodes();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="pdf_返回PDF格式"></a>pdf 返回PDF格式</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	pdf ( [ options ] )	//字符串的二进制数据编码为base64字符串
+	[ options ] {Object} : Additional options:
+		width: 所需的图象的像素宽度。
+		height: 所需的图象的像素高度。
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="png_返回网络为PNG图像"></a>png 返回网络为PNG图像</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//字符串的二进制数据编码为base64字符串
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="ready_topo图初始化完执行的回调函数"></a>ready topo图初始化完执行的回调函数</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.ready(function () {
+		// 执行的交互操作,或者监听事件
+		var nodes = vis.nodes();
+		// and so on...
+	});
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeAllContextMenuItems_移除所有鼠标右击菜单"></a>removeAllContextMenuItems 移除所有鼠标右击菜单</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.removeAllContextMenuItems();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeContextMenuItem_移除绑定的右击菜单"></a>removeContextMenuItem 移除绑定的右击菜单</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//绑定
+	vis.addContextMenuItem("Delete node", "nodes", function(evt) {		//右击节点,出现删除节点菜单
+			vis.removeNode(evt.target.data.id, true);
+	});
+	
+	//移除
+	vis.removeContextMenuItem("Delete node", "nodes");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeDataField_删除自定义字段"></a>removeDataField 删除自定义字段</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 1: 删除节点和连线的url字段
+	vis.removeDataField("url");
+	 
+	// 2: 只删除连线的url字段
+	vis.removeDataField("edges", "url");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeEdge_删除连线"></a>removeEdge 删除连线</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 1. 删除连线数组的第一个连线:
+	var edge = vis.edges()[0];
+	vis.removeEdge(edge,true/*true立刻渲染,false不立刻渲染*/);
+	 
+	// 2. 删除id为e101的连线:
+	vis.removeEdge("e101",true/*true立刻渲染,false不立刻渲染*/);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeElements_删除元素"></a>removeElements 删除元素</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 1. 删除连线:
+	vis.removeElements("edges", ["1", "2", "5"]);
+	 
+	// 2. 删除节点和连线:
+	var nodes = vis.nodes();
+	var edges = vis.edges();
+	vis.removeElements([nodes[0], nodes[1], edges[0]], true/*true立刻渲染,false不立刻渲染*/);
+	 
+	// 3. 删除所有连线
+	vis.removeElements("edges");
+	 
+	// 4. 删除所有节点和连线
+	vis.removeElements();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeFilter_删除过滤器"></a>removeFilter 删除过滤器</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.removeFilter("edges",false/*true立刻渲染,false不立刻渲染,默认false*/);
+	vis.removeFilter("nodes",false/*true立刻渲染,false不立刻渲染,默认false*/);
+	vis.removeFilter();//同时删除edges和nodes
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeListener_删除监听"></a>removeListener 删除监听</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.removeListener("click","nodes");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="removeNode_删除节点"></a>removeNode 删除节点</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	var node = vis.nodes()[0];
+	vis.removeNode(node);
+ 
+	vis.removeNode("n3");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<p>addEdge 添加连线</p>
+<div class="hr"><b></b></div>
+<h1><a name="select_选中"></a>select 选中</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// a) 选中节点:
+	var ids = [1,3,5,10];
+	vis.select("nodes", ids);
+	 
+	// b) 选中第一个节点:
+	var n = vis.nodes()[0];
+	vis.select([n]);
+	 
+	// c) 选中第一个节点和第一个连线:
+	var n = vis.nodes()[0];
+	var e = vis.edges()[0];
+	vis.select([n,e]);
+	 
+	// d) 选中所有节点:
+	vis.select("nodes");
+	 
+	// e) 选中所有连线:
+	vis.select("edges");
+	 
+	// f) 选中所有节点和连线:
+	vis.select();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="selected_选中组"></a>selected 选中组</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.selected();
+	vis.selected("nodes");
+	vis.selected("edges");
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="sif_返回网络数据的交互简单格式（SIF）"></a>sif 返回网络数据的交互简单格式（SIF）</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.sif(); //return {String} The SIF text. 返回string字符串
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="svg_返回一个SVG图像"></a>svg 返回一个SVG图像</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	svg ( [ options ] )
+	[ options ] {Object} : Additional options:
+		width: 所需的图象的像素宽度。
+		height: 所需的图象的像素高度。
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="swf_返回Flash对象"></a>swf 返回Flash对象</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.swf();
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="updateData_更新数据"></a>updateData 更新数据</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 1: 更新第一个节点:
+	var n = vis.nodes()[0];
+	n.data.label = "New Label...";
+	n.data.weight *= 2;
+	vis.updateData([n]);
+	 
+	// 2: 更新第一个和第二个节点和第一个连线:
+	var nodes = vis.nodes();
+	var n1 = nodes[0];
+	var n2 = nodes[1];
+	n1.data.label = "New Label for N1";
+	n2.data.label = "New Label for N2";
+	 
+	var e = vis.edges[0];
+	e.data.weight = 0.8;
+	 
+	vis.updateData([n1, n2, e]);
+	 
+	// 3: 更新连线id数组里的连线, 数据为data对象,
+	//    setting the same values to all of them:
+	var edge_ids = ["1","3","7"];
+	var data = { weight: 0.5, interaction: "pp" };
+	vis.updateData("edges", edge_ids, data);
+	 
+	// 4: 更新id数组内的节点和连线,数据为data对象
+	var ids = ["n1","n2","e7","e10"];
+	var data = { weight: 0 };
+	vis.updateData(ids, data);
+	 
+	// 5: 更新所有的节点和连线,数据为data对象:
+	var data = { weight: 0 };
+	vis.updateData(data);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="visualStyle_返回topo样式或者更新topo样式"></a>visualStyle 返回topo样式或者更新topo样式</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//取得
+	var style = vis.visualStyle();
+	
+	//设置
+	var style = {
+		global: {
+			backgroundColor: "#000000"
+		},
+		nodes: {
+			color: "#ffffff",
+			size: 40
+		}
+	};
+	vis.visualStyle(style);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="VisualStyleBypass_轻量级的动态修改样式方式"></a>VisualStyleBypass 轻量级的动态修改样式方式</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	// 选中的节点和连线:
+	var selected = vis.selected();
+	//初始样式对象
+	var bypass = { nodes: { }, edges: { } };
+	//初始要修改的样式
+	var props = { 
+			labelFontSize: 16,
+			labelFontColor: "#ff0000",
+			labelFontWeight: "bold"
+	};
+	//循环赋值
+	for (var i=0; i &lt; selected.length; i++) {
+		var obj = selected[i];
+		//往样式对象里添加
+		bypass[obj.group][obj.data.id] = props;
+	}
+	vis.visualStyleBypass(bypass); //最后一步,设置动态样式
+	
+	//如果觉得上面有点绕,看下面
+	    var bypass = {
+			nodes: {
+				"1": { color: "#ff0000", opacity: 0.5, size: 32 },
+				"3": { color: "#ffff00", opacity: 0.9 },
+				"7": { color: "#ffff00", opacity: 0.2 }
+			},
+			edges: {
+				"22": { width: 4, opacity: 0.2 },
+				"23": { width: 4, opacity: 0.2 }
+			 }
+		};
+	这是最后封装成的格式样子
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="xgmml_返回网络数据作为XGMML"></a>xgmml 返回网络数据作为XGMML</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.xgmml(); {String} The XML text. 返回字符串
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="zoom_设置topo图的缩放比例"></a>zoom 设置topo图的缩放比例</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	zoom ( [ scale ] )
+		[ scale ] {Number} : Value between 0 and 1. 值为0到1之间的数字
+	
+	//取值
+	vis.zoom();
+	//赋值
+	vis.zoom(0.5); //缩小1半
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="zoomToFit_调整缩放比例,自适应屏幕大小"></a>zoomToFit 调整缩放比例,自适应屏幕大小</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	vis.zoomToFit();
+	//由于没有返回值,可以添加监听,来取得缩放比例值.
+	var scale;
+	vis.addListener("zoom", function(evt) {
+		scale = evt.value;
+	});
+</pre>
+<p></p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

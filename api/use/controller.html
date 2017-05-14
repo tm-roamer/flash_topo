@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>第二步创建controller</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">第二步创建controller</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#新建一个controller">新建一个controller</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#构建JSP页面入口">构建JSP页面入口</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#加载列表/模糊查询">加载列表/模糊查询</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#模糊查询">模糊查询</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#新增与自定义校验">新增与自定义校验</a></div>
+</li>
+<li>
+<div><span class="num">6</span><a href="#更新与自定义校验">更新与自定义校验</a></div>
+</li>
+<li>
+<div><span class="num">7</span><a href="#查询单条详细">查询单条详细</a></div>
+</li>
+<li>
+<div><span class="num">8</span><a href="#删除">删除</a></div>
+</li>
+<li>
+<div><span class="num">9</span><a href="#小结">小结</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="新建一个controller"></a>新建一个controller</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>当我们在/controller目录下写一个controller类时,只需要继承AbstractTableTemplateController<img src="T"/>,设置一下类头部就可以了.</p>
+<p>红色框选中的为修改内容,其它地方不要修改,<img src="../imgs/controller1.png"/></p>
+<p>示例如下:</p>
+<pre>/**
+ * 模块名称的注释
+ * 	  具体功能的注释
+ */
+@IocBean
+@InjectName
+@At("/example/list")								//前台页面访问指定的路径(最后不要加/)
+@AuthBy(module="demo")								//制定模块权限的名称
+@Fail("error")										//失败处理
+public class TableExampleController extends AbstractTableTemplateController&lt;TableExampleObject&gt; {
+	
+	private static final Bundle bundle = new Bundle("apm");		/** 制定国际化配置文件 */
+	private Logger logger = Logger.getLogger(this.getClass());	/** 记录错误日志 */
+}
+</pre>
+<p>接下来介绍的增删改查功能,大家只需要copy示例代码.然后按照下面的要求修改红色框部分就可以了.</p>
+<div class="hr"><b></b></div>
+<h1><a name="构建JSP页面入口"></a>构建JSP页面入口</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>当我们controller搭建完毕,第一步要做的就是测试controller是否可以使用,所以要构建JSP页面入口</p>
+<p>红色框选中的为修改内容,其它地方不要修改,<img src="../imgs/controller2.png"/></p>
+<p>可是我们还没与页面怎么办? 可以先用示例页面代替例:</p>
+<pre>/**
+ *  进入JSP页面的入口
+ */
+@At("/main")
+@Ok("jsp:jsp.demo.crud.dialog_table_example")
+@Log(isEnabled=false)
+public void viewMain() {
+}
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="加载列表/模糊查询"></a>加载列表/模糊查询</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller3.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 加载列表(ajax)
+ */
+@At("/list/ajax")
+@Ok("json")
+@Log(isEnabled=false)
+public Pager&lt;TableExampleObject&gt; listAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+							@Param("..") Pager&lt;TableExampleObject&gt; pager/* 与UI的jgGrid控件配合使用才有效 */){
+	return super.listAjax(ioc, request, session, pager,TableExampleObject.class);
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="模糊查询"></a>模糊查询</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>模糊查询和加载列表功能基本一样,模糊查询是有条件查询,加载列表是无条件查询.</p>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller8.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 模糊查询(ajax)
+ */
+@At("/search/ajax") 							//访问路径与传统方式的路径区分开
+@Ok("json") 									//无论成功或是失败，都使用json作为输出
+@Log(isEnabled=false)
+public Pager&lt;TableExampleObject&gt; searchListAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+								@Param("..") Pager&lt;TableExampleObject&gt; pager,@Param("search") String search){
+	return super.searchListAjax(ioc, request, session,pager,TableExampleObject.class,search);
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="新增与自定义校验"></a>新增与自定义校验</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller4.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 新增(ajax)
+ */
+@At("/insert/ajax") 						//访问路径与传统方式的路径区分开
+@Ok("json") 								//无论成功或是失败，都使用json作为输出
+@Fail("json")								//失败处理
+@Chain("validate")
+@Validations("validateInsert")				//校验方法
+@Log(isEnabled=false)
+public void insertAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+					@Param("..") TableExampleObject obj){
+	super.insertAjax(ioc, request, session, obj);
+}
+
+/**
+ * 自定义校验-------新增(参数要和insertAjax方法一致)
+ */
+public List&lt;FormValidateEC&gt; validateInsert(Ioc ioc,HttpServletRequest request,HttpSession session, 
+					@Param("..") TableExampleObject obj) {
+	List&lt;FormValidateEC&gt; errors = new ArrayList&lt;FormValidateEC&gt;();
+	if ( true ) {
+		FormValidateEC error = new FormValidateEC("validate.repeat",new Bundle("main")).setName("required");
+		errors.add(error);
+	}
+	return errors;
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="更新与自定义校验"></a>更新与自定义校验</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller5.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 更新(ajax)
+ */
+@At("/update/ajax") 						//访问路径与传统方式的路径区分开
+@Ok("json") 								//无论成功或是失败，都使用json作为输出
+@Chain("validate")
+@Validations("validateUpdate")				//校验
+@Fail("json")								//失败处理
+@Log(isEnabled=false)
+public void updateAjax(HttpServletRequest request,HttpSession session,
+					@Param("..") TableExampleObject obj){
+	super.updateAjax(request, session, obj);
+}
+
+/**
+ * 自定义校验-------更新(参数要和updateAjax方法一致)
+ */
+public List&lt;FormValidateEC&gt; validateUpdate(HttpServletRequest request,HttpSession session, 
+					@Param("..") TableExampleObject obj) {
+	List&lt;FormValidateEC&gt; errors = new ArrayList&lt;FormValidateEC&gt;();
+	if ( true ) {
+		FormValidateEC error = new FormValidateEC("validate.repeat",new Bundle("main")).setName("required");
+		errors.add(error);
+	}
+	return errors;
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="查询单条详细"></a>查询单条详细</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller6.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 查询单条(ajax)
+ */
+@At("/detail/ajax") 							//访问路径与传统方式的路径区分开
+@Ok("json") 									//无论成功或是失败，都使用json作为输出
+@Log(isEnabled=false)
+public TableExampleObject readAjax(Ioc ioc,HttpServletRequest request,HttpSession session,@Param("id") long id){
+	return super.readAjax(ioc, request, session, id);
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="删除"></a>删除</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>去copy示例代码,替换红色框选中的内容,其它地方不要修改,<img src="../imgs/controller7.png"/></p>
+<p>示例页面代码:</p>
+<pre>/**
+ * 删除(ajax)
+ */
+@At("/delete/ajax") 							//访问路径与传统方式的路径区分开
+@Ok("json") 									//无论成功或是失败，都使用json作为输出
+@Log(isEnabled=false)
+public void deleteAjax(Ioc ioc,HttpServletRequest request,HttpSession session,@Param("ids") long[] ids){
+	super.deleteAjax(ioc, request, session, ids);
+}
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="小结"></a>小结</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>恭喜你已经完成controller的创建了啦,直接进入下一节service的创建吧,为什么不创建jsp? 咱们下节分晓.</p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

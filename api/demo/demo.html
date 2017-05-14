@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>关于示例</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">关于示例</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#关于示例">关于示例</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#root权限查看示例代码">root权限查看示例代码</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#创建示例代码的数据库表">创建示例代码的数据库表</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="关于示例"></a>关于示例</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>声明: 示例代码不可修改,只作为示例,方便大家copy使用.</p>
+<p>后台example地址: /java/main/com/venustech/tsoc/cupid/demo/crud</p>
+<p>前台example地址: /web/WEB-INF/jsp/demo/crud</p>
+<p>后台exapmle地址</p>
+<p><img src="../imgs/demo1.png"/></p>
+<p>前台exapmle地址:</p>
+<p><img src="../imgs/demo2.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="root权限查看示例代码"></a>root权限查看示例代码</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>因为示例代码放在demo目录下,工程跑起来需要root权限才行,有些系统没有root权限的用户,按照如下步骤添加.</p>
+<p>在工程的根目录下有/ddl文件夹,里面有查找cupid_init.sql文件,第5行是root用户的插入语句:</p>
+<pre>INSERT INTO `auth_user` VALUES (1,'root','超级管理员','761b838fca2d2b3aa1c0c60812300cb9d81af4b0',NULL,NULL,NULL,1,NULL,0,0,0,0,0,NULL,NULL);
+</pre>
+<p>切记是导入本地数据库.</p>
+<div class="hr"><b></b></div>
+<h1><a name="创建示例代码的数据库表"></a>创建示例代码的数据库表</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>由于示例代码库表默认是不会创建的,需要我们手动创建,过程很简单,打开TableExampleObject示例对象,里面就有建表语句.导入本地数据库即可.</p>
+<p>示例如下:</p>
+<pre>CREATE TABLE `aa_demo_to` (
+	`id` BIGINT(10) NOT NULL COMMENT '主键',
+	`required` VARCHAR(30) NULL COMMENT '必填项',
+	`requiredIfChecked` VARCHAR(30) NULL COMMENT '必填项check',
+	`minlength` VARCHAR(200) NULL COMMENT '最小长度',
+	`email` VARCHAR(100) NULL COMMENT '邮箱',
+	`ipBefore` VARCHAR(35) NULL COMMENT '开始ip',
+	`datetime` VARCHAR(30) NULL COMMENT '日期时间',
+	`dtBefore` VARCHAR(30) NULL COMMENT '开始时间',
+	`regex` VARCHAR(30) NULL COMMENT '正则',
+	`pwd` VARCHAR(30) NULL COMMENT '密码',
+	`number` VARCHAR(30) NULL COMMENT '数字',
+	`min` INT(30) NULL COMMENT '最小数字',
+	`port` INT(30) NULL COMMENT '端口',
+	`gt` INT(30) NULL COMMENT '大于'
+)
+COMMENT='这个对象,是页面模版组件的一个演示表, 主要模拟表格的展示,增删改和验证.查询索引'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

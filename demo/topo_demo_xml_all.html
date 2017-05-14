@@ -1,0 +1,759 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<link href="css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+		<style>
+			html, body { overflow:hidden;height: 100%; width: 100%; padding: 0; margin: 0;}
+			.toolbar{ height:30px;margin:0 auto;background:blue;color:#fff;}
+            #cytoscapeweb { width: 100%; height: 100%;}
+		</style>
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.4.custom.js"></script>
+		<script type="text/javascript" src="js/json2.js"></script><!-- 拓扑图js,必须引用 -->
+		<script type="text/javascript" src="js/AC_OETags.js"></script><!-- 拓扑图js,必须引用 -->
+		<script type="text/javascript" src="js/cytoscapeweb.js"></script><!-- 拓扑图js,必须引用 -->
+		
+		
+	</head>
+	<body>
+		
+			<div class="menu_bar">
+				<ul>
+					<li><a href="javascript://" id="menu_save">保存</a></li>
+					<!--
+					<li><a href="javascript://" id="menu_import">导入</a></li>
+					<li><a href="javascript://" id="menu_export">导出</a></li>
+					-->
+					<li><a href="javascript://" id="menu_add_node">添加节点</a></li>
+					<li><a href="javascript://" id="menu_edit_node">修改节点</a></li>
+					<li><a href="javascript://" id="menu_del_node">删除节点</a></li>
+					<li><a href="javascript://" id="menu_add_edge">添加连线</a></li>
+					<li><a href="javascript://" id="menu_edit_edge">修改连线</a></li>
+					<li><a href="javascript://" id="menu_del_edge">删除连线</a></li>
+					<li><a href="javascript://" id="menu_layout_select">更换布局<small> ▼</small></a>
+						<ul class="menu_son">
+							<li><a href="javascript://" id="menu_layout_forceDirected">力导向</a></li>
+							<li><a href="javascript://" id="menu_layout_circle">圆形布局</a></li>
+							<li><a href="javascript://" id="menu_layout_radial">射线</a></li>
+							<li><a href="javascript://" id="menu_layout_tree">树形</a></li>
+						</ul>
+					</li>
+					<li><a href="javascript://" id="menu_refresh">刷新</a></li>
+					<li><a href="javascript://" id="menu_refresh_data">刷新数据</a></li>
+				</ul>
+			</div>
+			<!-- 拓扑图div -->
+			<div id="cytoscapeweb" >
+				Cytoscape Web will replace the contents of this div with your graph.
+			</div>
+		
+		
+		<!-- 新增节点 -->
+		<div id="menu_add_dialog" title="新增">
+			<form>
+				<div>姓名:<input type="input" name="name" /></div>
+				<div>IP地址:<input type="input" name="ip" /></div>
+				<div>类型:
+					<select name="type">
+						<option value="terminal">终端</option>
+						<option value="host">服务器</option>
+						<option value="mid">中间件</option>
+						<option value="db">数据库</option>
+					</select>
+				</div>
+				<div><input type="button" value="提交" id="menu_add_node_submit" /></div>
+			</form>
+		</div>
+		<!-- 更新节点 -->
+		<div id="menu_edit_dialog" title="更新">
+			<form>
+				<input type="hidden" name="id" />
+				<div>姓名:<input type="input" name="name" /></div>
+				<div>IP地址:<input type="input" name="ip" /></div>
+				<div>类型:
+					<select name="type">
+						<option value="terminal">终端</option>
+						<option value="host">服务器</option>
+						<option value="mid">中间件</option>
+						<option value="db">数据库</option>
+					</select>
+				</div>
+				<div><input type="button" value="提交" id="menu_edit_node_submit" /></div>
+			</form>
+		</div>
+		<!-- 节点详细 -->
+		<div id="menu_edit_detial" title="节点详细">
+			<form>
+				<input type="hidden" name="id" />
+				<div>姓名:<span class="span_name"></span></div>
+				<div>IP地址:<span class="span_ip"></span></div>
+				<div>类型:<span class="span_type"></span></div>
+			</form>
+		</div>
+		<!-- 删除节点 -->
+		<div id="menu_del_dialog" title="删除">
+			<form>
+				<div>确定删除吗?<input type="button" value="提交" id="menu_del_node_submit" /></div>
+			</form>
+		</div>
+		<!-- 新增连线 -->
+		<div id="menu_add_edge_dialog" title="配置连线">
+			<form>
+				<div>方向:<input type="checkbox" name="arrow" id="line_arrow" value="delta"/></div>
+				<div>颜色:<input type="input" name="color" /></div>
+				<div>粗细:<input type="input" name="weight" /></div>
+				<div><input type="button" value="配置" id="menu_add_edge_submit" /></div>
+			</form>
+		</div>
+		<!-- 更新连线 -->
+		<div id="menu_edit_edge_dialog" title="更新">
+			<form>
+				<input type="hidden" name="id" />
+				<div>标签:<input type="input" name="label" /></div>
+				<div>悬停提示:<input type="input" name="tooltip" /></div>
+				<div>颜色:<input type="input" name="color" /></div>
+				<div><input type="button" value="提交" id="menu_edit_edge_submit" /></div>
+			</form>
+		</div>
+		<!-- 连线详细 -->
+		<div id="menu_edit_edge_detail" title="连线详细">
+			<form>
+				<input type="hidden" name="id" />
+				<div>标签:<span class="span_label"></span></div>
+				<div>悬停提示:<span class="span_tooltip"></span></div>
+				<div>颜色:<span class="span_color"></span></div>
+			</form>
+		</div>
+		<!-- 连线悬浮提示框 -->
+		<div id="menu_edit_edge_tooltip" title="连线悬浮提示框">
+			<form>
+				<input type="hidden" name="id" />
+				<div>标签:<span class="span_label"></span></div>
+				<div>悬停提示:<span class="span_tooltip"></span></div>
+				<div>颜色:<span class="span_color"></span></div>
+			</form>
+		</div>
+		<!-- 删除连线 -->
+		<div id="menu_del_edge_dialog" title="删除">
+			<form>
+				<div>确定删除吗?<input type="button" value="提交" id="menu_del_edge_submit" /></div>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+			var vis; //拓扑图对象
+			var skinBackgroundColor = "#252525";  //动态修改拓扑图样式示例
+			var skinCompoundColor = "#252525";
+			var skinEdgeColor = "#c1c1c1";
+			var skinNodeGlowColor = "#ffffff";
+			var skinLabelColor = "#ffffff";
+			var line_mode = false; //连线模式
+			var line_mode_obj={	   //连线配置对象
+				weight:1,
+				arrow:"",
+				color:""
+			}
+			$(document).ready(function(){
+				//alert($("body").height());
+				//拓扑图宽高自定义
+				//$("#cytoscapeweb").css({"height":});
+				$("#cytoscapeweb").height($("body").height()-40);
+				
+				/**
+				 *--------------------------------------工具栏--------------------------------------
+				 */
+				//保存
+				$("#menu_save").click(function(){
+					/* 示例ajax
+					var element = vis.networkModel();
+					$.each( element.data.nodes, function(idx,val){
+						var node = vis.node(val.id); 
+						if( node ){val.x = node.x;val.y = node.y;}
+					});
+					$.ajax({url:c_topo.crud.url.save,type:"POST",dataType:"json",
+							data:{nodes:$.toJSON(element.data.nodes),edges:$.toJSON(element.data.edges)},
+							success:function(){
+								$.jGrowl("",{header:"保存成功！",group:"success"});
+							}
+					});
+					*/
+					alert("代码124行已将ajax保存附上");
+				});
+				//导入
+				$("#menu_import").click(function(){
+					
+				});	
+				//导出
+				$("#menu_export").click(function(){
+					
+				});
+				//添加节点
+				$("#menu_add_node").click(function(){
+					$("#menu_add_dialog").dialog();
+				});
+				//添加节点确认
+				$("#menu_add_node_submit").click(function(){
+					var form = $("#menu_add_dialog").find("form");
+					var name = form.find("input[name='name']").val();
+					var ip = form.find("input[name='ip']").val();
+					var type = form.find("select[name='type']").val();
+					var random = Math.random()*200;
+					vis.addNode(random,random,{id:"add"+random,name:name,ip:ip,type:type,label:name,tooltip:name,imgtype:"img/node1.png"});
+					$("#menu_add_dialog").dialog( "close" );
+				});
+				//修改节点
+				$("#menu_edit_node").click(function(){
+					var nodes = vis.selected();
+					if( nodes.length  == 1 && nodes[0].group == "nodes" ){
+						$("#menu_edit_dialog").dialog();
+						var id=nodes[0].data.id,name=nodes[0].data.name,ip=nodes[0].data.ip,type=nodes[0].data.type;
+						var form = $("#menu_edit_dialog").find("form");
+						form.find("input[name='id']").val(id);
+						form.find("input[name='name']").val(name);
+						form.find("input[name='ip']").val(ip);
+						form.find("select[name='type']").val(type);
+					}else{
+						alert("先选中一个节点");
+					}
+				});
+				//修改节点确认
+				$("#menu_edit_node_submit").click(function(){
+					var form = $("#menu_edit_dialog").find("form");
+					var id = form.find("input[name='id']").val();
+					var name = form.find("input[name='name']").val();
+					var ip = form.find("input[name='ip']").val();
+					var type = form.find("select[name='type']").val();
+					var node = vis.node(id); //参数为节点id
+					node.data.name = name;
+					node.data.ip = ip;
+					node.data.type = type;
+					node.data.label = name;
+					node.data.tooltip = name;
+					vis.updateData([node]);
+					$("#menu_edit_dialog").dialog( "close" );
+				});
+				//删除节点
+				$("#menu_del_node").click(function(){
+					var nodes = vis.selected();
+					if( nodes.length  == 1  && nodes[0].group == "nodes" ){
+						$("#menu_del_dialog").dialog();
+					}else{
+						alert("先选中一个节点");
+					}
+				});
+				//删除节点确认
+				$("#menu_del_node_submit").click(function(){
+					var nodes = vis.selected();
+					var id = nodes[0].data.id;
+					vis.removeNode(id);
+					$("#menu_del_dialog").dialog( "close" );
+				});
+				//添加连线
+				$("#menu_add_edge").click(function(){
+					//接556行
+					line_mode = true;
+					vis.removeListener("click", "nodes", clickNodeToAddEdge);
+					vis.addListener("click", "nodes", clickNodeToAddEdge);
+					$("#menu_add_edge_dialog").dialog();
+				});
+				//添加连线确认
+				$("#menu_add_edge_submit").click(function(){
+					var form = $("#menu_add_edge_dialog").find("form");
+					if( $("#line_arrow").attr("checked") ){
+						line_mode_obj.arrow = "delta"
+					}else{
+						line_mode_obj.arrow = "none";
+					}
+					//line_mode_obj.arrow = form.find("input[name='arrow']").val();
+					line_mode_obj.weight = parseInt(form.find("input[name='weight']").val() );
+					line_mode_obj.color = form.find("input[name='color']").val();
+					$("#menu_add_edge_dialog").dialog( "close" );
+					alert("进入连线模式,点击开始节点和目标节点");
+				});
+				//修改连线
+				$("#menu_edit_edge").click(function(){
+					var edges = vis.selected();
+					if( edges.length  == 1 && edges[0].group == "edges" ){
+						$("#menu_edit_edge_dialog").dialog();
+						var id=edges[0].data.id,label=edges[0].data.label,tooltip=edges[0].data.tooltip,color=edges[0].data.color;
+						var form = $("#menu_edit_edge_dialog").find("form");
+						form.find("input[name='id']").val(id);
+						form.find("input[name='label']").val(label);
+						form.find("input[name='tooltip']").val(tooltip);
+						form.find("input[name='color']").val(color);
+					}else{
+						alert("先选中一个连线");
+					}
+				});
+				//修改连线确认
+				$("#menu_edit_edge_submit").click(function(){
+					var form = $("#menu_edit_edge_dialog").find("form");
+					var id = form.find("input[name='id']").val();
+					var label = form.find("input[name='label']").val();
+					var color = form.find("input[name='color']").val();
+					var tooltip = form.find("input[name='tooltip']").val();
+					var edge = vis.edge(id); //参数为节点id
+					edge.data.color = color;
+					edge.data.label = label;
+					edge.data.tooltip = tooltip;
+					vis.updateData([edge]);
+					$("#menu_edit_edge_dialog").dialog( "close" );
+				});
+				//删除连线
+				$("#menu_del_edge").click(function(){
+					var edges = vis.selected();
+					if( edges.length  == 1  && edges[0].group == "edges" ){
+						$("#menu_del_edge_dialog").dialog();
+					}else{
+						alert("先选中一个连线");
+					}
+				});
+				//删除连线确认
+				$("#menu_del_edge_submit").click(function(){
+					var edges = vis.selected();
+					var id = edges[0].data.id;
+					vis.removeEdge(id);
+					$("#menu_del_edge_dialog").dialog( "close" );
+				});
+				//更换布局
+				//$("#menu_layout_select").click(function(){});
+				$("#menu_layout_forceDirected").click(function(){vis.layout('forceDirected');});
+				$("#menu_layout_circle").click(function(){vis.layout('circle');});
+				$("#menu_layout_radial").click(function(){vis.layout('radial');});
+				$("#menu_layout_tree").click(function(){vis.layout('tree');});
+				//刷新
+				$("#menu_refresh").click(function(){
+					/*
+					var nodes = vis.selected();
+					if( nodes.length  == 1 && nodes[0].group == "nodes" )
+					{	
+						var id=nodes[0].data.id;
+						var node = vis.node(id); //参数为节点id
+						alert(node.data.label);
+						node.data.label = node.data.label+"_update";
+						alert(node.data.label);
+						vis.updateData([node]);
+					}
+					*/
+					//跟386行一样
+					//---------------------------------初始化拓扑图的数据---------------------------------------------//
+					//参考示例ajax加载xml数据
+					$.ajax({url : "xml/network_xml.graphml",
+							async	: false,		//false为同步
+							dataType: 'xml',
+							success	: function(obj){
+								var dt;
+								if (typeof dt !== "string") {
+									if (window.ActiveXObject) {
+										dt = obj.xml; //ie
+									} else {
+										dt = obj.children[0].outerHTML; //火狐
+									}
+								}
+								draw_options.network = dt;
+								//第二次绘制加载数据
+								vis.draw(draw_options);
+							}
+					});
+					
+				});
+	
+				//---------------------------------初始化flex图形的样式---------------------------------------------//
+				//------------------可以参考官网不写这么多的,是为了让大家更好的设置样式-----------------------------//
+	            //设置样式
+	            var visual_style = {
+	            	   global: {
+	            	          backgroundColor: skinBackgroundColor,	//背景颜色,默认#ffffff白色,不知道为什么不好使????????
+	            	          tooltipDelay: 400,			//光标在node和dege的tooltip的反应延时,默认800
+	            	       	  selectionFillColor: "#8888ff",		//选区矩形的颜色,默认#8888ff
+	            	       	  selectionLineColor: "#8888ff",		//选区矩形边框的颜色,默认#8888ff
+	            	       	  selectionFillOpacity:0.1,	//选区矩形的透明度,默认0.1
+	            	       	  selectionLineOpacity:0.8,	//选区矩形边框的透明度,默认0.8
+	            	       	  selectionLineWidth:1		//选区矩形边框的宽度,默认1
+	            	   },
+	                   nodes: {
+	                        shape: { passthroughMapper: { attrName: "shape" } },//"ELLIPSE",	//节点形状,椭圆ELLIPSE/矩形RECTANGLE/三角形TRIANGLE/钻石DIAMOND/六角HEXAGON/八角OCTAGON/平行四边形PARALLELOGRAM/绘制的ROUNDRECT/v字形VEE
+	                        size: { passthroughMapper: { attrName: "weight" } }, //节点大小,可以自动设置,默认24
+	                        //color:{ passthroughMapper: { attrName: "color" } },  //节点颜色,默认#f5f5f5
+	                        opacity:1,		//节点的透明度,默认0.8
+	                        //width://节点的宽度,以像素为单位
+	                        //height://节点的高度,以像素为单位
+	                        //image:"${base}/images/aaaa.gif", //图像的URL作为节点的背景
+							image: { passthroughMapper: { attrName: "imgtype" } },//{ discreteMapper:{attrName: "imgtype",entries: nodeImages } },
+	                        borderColor:{ passthroughMapper: { attrName: "color" } },//节点边框颜色,默认值#666666
+	                        borderWidth:1,//节点边框的宽度,默认值1
+	                        selectionColor: { passthroughMapper: { attrName: "color" } },//"#f5f5f5",//节点选中的颜色,默认等于color
+	                        selectionBorderColor:skinNodeGlowColor,//节点选中的边框颜色,默认等于bordercolor 666666
+	                        selectionOpacity:1,		//节点选中的透明度,默认等于opacity
+	                        selectionBorderWidth:0,	//节点选中的边框宽度,默认等于borderWidth
+	                        selectionGlowColor: skinNodeGlowColor,//"#ffff33",//节点选中的发光颜色,默认#ffff33
+	                        selectionGlowOpacity:0.9,	//节点选中的发光透明度,默认0.6
+	                        selectionGlowBlur:8,		//节点选中的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        selectionGlowStrength:3,	//节点选中的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+	                        hoverOpacity:1,	//节点悬停的透明度,默认等于opacity
+	                        hoverBorderColor:skinNodeGlowColor,//节点悬停的边框颜色,默认等于bordercolor 666666
+	                        hoverBorderWidth:0,//节点悬停的边框宽度,默认等于borderWidth
+	                        hoverGlowColor: skinNodeGlowColor,//{ passthroughMapper: { attrName: "color" } },//"#aae6ff",//节点悬停的发光颜色,默认“#aae6ff”
+	                        hoverGlowOpacity:0.9,	//节点悬停的透明度,默认0
+	                        hoverGlowBlur:8,	//节点悬停的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        hoverGlowStrength:3,//节点悬停的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+	                        //label: { passthroughMapper: { attrName: "label" } } ,//节点显示文字,可以映射节点数据的字段,自动默认映射label字段
+	                        labelfontname:"Arial",//节点显示标签的字体,默认Arial
+	                        labelfontsize:11,//节点显示标签的字体大小,默认11
+	                        labelFontColor:skinLabelColor,//节点显示标签的字体颜色,默认#000000黑色
+	                        labelFontWeight:"normal",//节点显示标签的字体粗细,默认normal,支持bold(加粗)
+	                        labelFontStyle:"normal",//节点显示标签的字体样式,默认normal,支持italic(斜体)
+	                        labelHorizontalAnchor:"center",//节点显示标签的水平显示位置,默认center,支持left,right
+	                        labelVerticalAnchor:"bottom",	//节点显示标签的垂直的显示位置,默认middle,支持top,bottom
+	                        labelXOffset:0, //节点显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+	                        labelYOffset:0, //节点显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+	                        labelGlowColor:"#ffffff", //节点显示标签的发光颜色,默认#ffffff
+	                        labelGlowOpacity:0,	//节点显示标签的发光透明度,默认0
+	                        labelGlowBlur:8,	//节点显示标签的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        labelGlowStrength:20,//节点显示标签的发光对比度,有效值0-255,默认值20,对滤镜和渐变理解不深的不建议修改
+	                        tooltipText:{ passthroughMapper: { attrName: "tooltip" } },//"<b>${label}</b>: ${weight}",//节点的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+	                        tooltipFont:"Arial", //节点提示文字的字体,默认Arial
+	                        tooltipFontSize:11,//节点提示文字的字体大小,默认11
+	                        tooltipFontColor:"#ffffff",//线的提示文字的文字颜色,默认#000000
+	                        tooltipBackgroundColor:"#505050",//线的提示文字的背景颜色,默认#f5f5cc
+	                        tooltipBorderColor:"#505050",//线的提示文字的边框颜色,默认#000000
+	                        //
+	                        //节点组(复合节点)的样式,参考上面节点的样式,是一样的,只不过字段前面加了compound而已
+	                        //
+	                        compoundShape: "RECTANGLE",//节点组形状,只接受椭圆ELLIPSE/矩形RECTANGLE/绘制的ROUNDRECT
+	                        //compoundSize:"auto",//auto(默认),ignoreLabels,//节点组的尺寸,一般自动,不需要设置.
+	                        compoundColor: skinCompoundColor,//"#252525", //节点组颜色,默认#f5f5f5
+	                        compoundOpacity:0.8,		//节点组的透明度,默认0.8
+	                        //compoundWidth:400,//节点组的宽度,以像素为单位,不支持
+	                        //compoundHeight:150,//节点组的高度,以像素为单位,不支持
+	                        //compoundImage://图像的URL作为节点组的背景
+	                        compoundBorderColor:{ passthroughMapper: { attrName: "color" } },//"#20b6e4",//节点组边框颜色,默认值#666666
+	                        compoundBorderWidth:1,//节点组边框的宽度,默认值1
+	                        compoundSelectionBorderColor:"#20b6e4",//节点组选中的边框颜色,默认等于bordercolor
+	                        compoundSelectionBorderWidth:0,	//节点组选中的边框宽度,默认等于borderWidth
+	                        compoundSelectionColor:{ passthroughMapper: { attrName: "compoundColor" } }, //"#f5f5f5",//节点组选中的颜色,默认等于color
+	                        compoundSelectionOpacity:0.8,		//节点组选中的透明度,默认等于opacity
+	                        compoundSelectionGlowColor: { passthroughMapper: { attrName: "compoundColor" } }, //"#ffff33",	//节点组选中的发光颜色,默认#ffff33
+	                        compoundSelectionGlowOpacity:0.5,	//节点组选中的发光透明度,默认0.6
+	                        compoundSelectionGlowBlur:8,		//节点组选中的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        compoundSelectionGlowStrength:3,	//节点组选中的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+	                        compoundHoverBorderColor:"#20b6e4",//节点组悬停的边框颜色,默认等于bordercolor
+	                        compoundHoverBorderWidth:0,//节点组悬停的边框宽度,默认等于borderWidth
+	                        compoundHoverColor:"#20b6e4",
+	                        compoundHoverOpacity:0.8,	//节点组悬停的透明度,默认等于opacity
+	                        compoundHoverGlowColor:{ passthroughMapper: { attrName: "compoundColor" } }, //节点组悬停的发光颜色,默认“#aae6ff”
+	                        compoundHoverGlowOpacity:0.5,	//节点组悬停的透明度,默认0
+	                        compoundHoverGlowBlur:8,	//节点组悬停的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        compoundHoverGlowStrength:3,//节点组悬停的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+	                        //compoundLabel: { passthroughMapper: { attrName: "label" } } ,//节点组显示文字,可以映射节点数据的字段,自动默认映射label字段
+	                        compoundLabelfontname:"Arial",//节点组显示标签的字体,默认Arial
+	                        compoundLabelfontsize:11,//节点组显示标签的字体大小,默认11
+	                        compoundLabelFontColor:skinLabelColor,//节点组显示标签的字体颜色,默认#000000黑色
+	                        compoundLabelFontWeight:"normal",//节点组显示标签的字体粗细,默认normal,支持bold(加粗)
+	                        compoundLabelFontStyle:"normal",//节点组显示标签的字体样式,默认normal,支持italic(斜体)
+	                        compoundLabelHorizontalAnchor:"center",//节点组显示标签的水平显示位置,默认center,支持left,right
+	                        compoundLabelVerticalAnchor:"bottom",	//节点组显示标签的垂直的显示位置,默认middle,支持top,bottom
+	                        compoundLabelXOffset:0, //节点组显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+	                        compoundLabelYOffset:0, //节点组显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+	                        compoundLabelGlowColor:skinLabelColor, //节点组显示标签的发光颜色,默认#ffffff
+	                        compoundLabelGlowOpacity:0,	//节点组显示标签的发光透明度,默认0
+	                        compoundLabelGlowBlur:2,	//节点组显示标签的发光模糊效果,默认2,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                        compoundLabelGlowStrength:20,//节点组显示标签的发光对比度,有效值0-255,默认值20,对滤镜和渐变理解不深的不建议修改
+	                        //compoundTooltipText:{ passthroughMapper: { attrName: "tooltip" } },//"<b>${label}</b>: ${weight}",//节点组的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+	                        compoundTtooltipFont:"Arial", //节点组提示文字的字体,默认Arial
+	                        compoundTooltipFontSize:11,//节点组提示文字的字体大小,默认11
+	                        compoundTooltipFontColor:"#ffffff",//节点组提示文字的字体颜色,默认#000000黑色
+	                        compoundTooltipBackgroundColor:"#505050",//节点组提示文字的背景颜色,默认#f5f5cc
+	                        compoundTooltipBorderColor:"#505050"//节点组提示文字的边框,默认#000000黑色
+	                 },
+	                 edges:{
+	                 	  style:"SOLID",	//线的样式,"SOLID(实心)/DOT(点)/LONG_DASH长破折号/EQUAL_DASH短破折号. 默认"SOLID"
+	                  	  color: { passthroughMapper: { attrName: "color" } },	//线的颜色,默认#999999
+	                  	  width: { passthroughMapper: { attrName: "weight" } },	//线的宽度,默认1px
+	                  	  opacity: 0.5, 	//线的透明度,默认0.8
+	                  	  //???????????????????????????????????????????????????/
+	                      // mergeColor:"#666666",	//合并线的颜色,默认#999999
+	                      // mergeWidth: 1,		//合并线的宽度,默认1px
+	                      // mergeOpacity: 0.8, 	//合并线的透明度,默认0.8
+	                      // mergeStyle:"SOLID",	//合并线的样式,"SOLID(实心)/DOT(点)/LONG_DASH长破折号/EQUAL_DASH短破折号. 默认"SOLID"
+	                      // mergeTooltipText:"<b>${label}</b>",//合并线的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+	                       //???????????????????????????????????????????????????/
+	                       selectionColor:{ passthroughMapper: { attrName: "color" } }, //"#999999",//线选中的颜色,默认color,或者mergeColor
+	                       selectionOpacity:1, //线选中的透明度,默认opacity,或者mergeOpacity
+	                       selectionGlowColor:  { passthroughMapper: { attrName: "color" } }, //"#ffff33",//线选中发光的颜色,默认#ffff33
+	                       selectionGlowOpacity:0.5,//线选中发光的透明度,默认0.6
+	                       selectionGlowBlur:4,//线选中发光的模糊效果,默认4,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                       selectionGlowStrength:3,//线选中发光的对比度,有效值0-255,默认值10,对滤镜和渐变理解不深的不建议修改
+	                       hoverOpacity:1,//悬停的透明度
+	                       curvature:18,	//线的曲率,线的弧形弯曲角度,默认18
+	                       sourceArrowShape:{ passthroughMapper: { attrName: "sourceArrowShape" } }, //线起点的样式,NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型)
+	                       targetArrowShape:{ passthroughMapper: { attrName: "targetArrowShape" } },//"delta",//线终点的样式,线数据没有配置,默认none,线数据设置directed,默认delta
+	                       //sourceArrowColor:"#999999", //线起点颜色,默认color
+	      			  	   //targetArrowColor:"#179fdc", //"#999999", //线终点颜色,默认color
+	       				   label: { passthroughMapper: { attrName: "label" } }, //线显示文字,可以映射节点数据的字段,自动默认映射label字段
+	                       labelHorizontalAnchor: "center", //线显示标签的水平显示位置,默认center,支持left,right
+	                       labelVerticalAnchor: "middle", //线显示标签的垂直的显示位置,默认middle,支持top,bottom
+	                       labelXOffset: 0, //线显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+	                       labelYOffset: 0, //线显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+	                       labelFontName: "Arial", //线显示标签的字体,默认Arial
+	                       labelFontSize:11, //线显示标签的字体大小,默认11
+	                       labelFontColor: skinLabelColor, //线显示标签的字体颜色,默认#000000黑色
+	                       labelFontWeight: "normal", //线显示标签的字体粗细,默认normal,支持bold(加粗)
+	                       labelFontStyle: "normal",  //线显示标签的字体样式,默认normal,支持italic(斜体)
+	                       labelGlowColor:skinLabelColor, //线显示标签的发光颜色,默认#fffff白色
+	                       labelGlowOpacity:0,//线显示标签的发光透明度,默认#fffff白色
+	                       labelGlowBlur:2, //线显示标签的发光模糊效果,默认2,有效值0-255,最好8的倍数,例如2、4、8、16、32
+	                       labelGlowStrength:20,//线显示标签的发光对比度,有效值0-255,默认值10,对滤镜和渐变理解不深的不建议修改
+	                       tooltipText: { passthroughMapper: { attrName: "tooltip" } },//线的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+	                       tooltipFont: "Arial",//线的提示文字的文字字体,默认Arial
+	                       tooltipFontSize: 11,//线的提示文字的文字大小,默认11px
+	                       tooltipFontColor:"#ffffff",//线的提示文字的文字颜色,默认#000000
+	                       tooltipBackgroundColor:"#505050",//线的提示文字的背景颜色,默认#f5f5cc
+	                       tooltipBorderColor:"#505050"//线的提示文字的边框颜色,默认#000000
+	                 }
+	            };
+				
+				//---------------------------------初始化flex图形---------------------------------------------//
+	          	 var div_id = "cytoscapeweb";	//显示拓扑图的<div>id,
+	             var options = {
+	                  swfPath : "flash/CytoscapeWeb",					//主程序.swf文件
+	                  flashInstallerPath : "flash/playerProductInstall",//本地的flash安装路径.swf文件
+	                  //flashAlternateContent:"",//flash没有打开的空白文字
+	                  //resourceBundleUrl:"",	//国际化文字.properties文件
+	                  //idToken:"home" 			//一个页面多个topo图时,自定义id,通常不需要配置
+	                  //mouseDownToDragDelay:400 //鼠标选中节点,按住400毫秒,即可选中相关联的所有节点,设置1即不激活.默认400毫秒
+	            };
+	            vis = new org.cytoscapeweb.Visualization(div_id, options);	//取得了拓扑图对象
+				
+				//---------------------------------配置绘画---------------------------------------------//
+			    var draw_options = {
+				   //network: network_xml,	//显示数据
+				   nodeLabelsVisible:true,  //是否显示线的标签
+				   edgeLabelsVisible:true,  //是否显示点的标签
+				   /**/layout: { //"CompoundSpringEmbedder",//layout: "Tree",Circle,ForceDirected,Radial,CompoundSpringEmbedder
+					 name:"Preset",
+					 options:{
+						fitToScreen :false, //false左上角为0,0 true为节点居中,自动适应屏幕,0,0不是中心点
+						points: null//pointData
+					 }
+				   },  
+				   //layout:"ForceDirected",
+				   visualStyle: visual_style,	//设置样式
+				   panZoomControlVisible:true,  //是否显示控制台
+				   nodeTooltipsEnabled: true,	//是否显示点的tooltip
+				   edgeTooltipsEnabled: true	//是否显示线的tooltip
+					//preloadImages: true,
+					//useProxy: false
+			    };
+				//---------------------------------开始绘画---------------------------------------------//
+				//第一次绘制加载样式和配置
+				vis.draw(draw_options);
+				
+				//---------------------------------初始化拓扑图的数据---------------------------------------------//
+				//参考示例ajax加载xml数据
+				$.ajax({url : "xml/network_xml.graphml",
+						async	: false,		//false为同步
+						dataType: 'xml',
+						success	: function(obj){
+							var dt;
+							if (typeof dt !== "string") {
+								if (window.ActiveXObject) {
+									dt = obj.xml; //ie
+								} else {
+									dt = obj.children[0].outerHTML; //火狐
+								}
+							}
+							draw_options.network = dt;
+							//第二次绘制加载数据
+							vis.draw(draw_options);
+						}
+				});
+				
+				//---------------------------------当vis绘制加载完成执行ready---------------------------------------------//
+	            vis.ready(function() {
+	            	   
+	                   //----------------------------------以下代码为参考示例,可以模仿书写事件-------------------------------
+					   //加载数据,转换坐标
+					   var networkModel = vis.networkModel();
+					   var array = new Array();
+					   /* jquery 
+					   $.each( networkModel.data.nodes, function(idx,val){
+							val.flicker=false; //设置闪烁的, true为闪烁,false为不闪烁
+		           			array.push({group:"nodes",x:val.x,y:val.y,data:val});
+		           	   });
+					   $.each( networkModel.data.edges, function(idx,val){
+		           			array.push({group:"edges",data:val});
+		           	   });
+					   */
+					   var nodes = networkModel.data.nodes,
+						   edges = networkModel.data.edges;
+						for(var i=0; i<nodes.length; i++){
+							var obj = nodes[i];
+							obj.flicker=false; //设置闪烁的, true为闪烁,false为不闪烁
+							array.push({group:"nodes",x:obj.x,y:obj.y,data:obj});
+						}
+						for(var j=0; j<edges.length; j++){
+							var obj = edges[j];
+							array.push({group:"edges",data:obj});
+						}
+						/*
+						function writeObj(obj){
+							var description = "";
+							for(var i in obj){  
+							var property=obj[i];  
+							description+=i+" = "+property+"\n"; 
+							}  
+							alert(description);
+						}
+						writeObj(nodes[0]);
+						*/
+					   vis.removeElements();
+	            	   vis.addElements(array,true); //配合Preset布局使用,只有这样才能第一次将x,y坐标传入
+					   //alert("123");
+					   /*
+	                   //先移除监听
+	                   vis.removeListener("mouseover","edges");
+	                   vis.removeListener("mouseout","edges");
+	                   vis.removeListener("click","nodes");
+	                   //悬停线条
+	                   vis.addListener("mouseover", "edges", function(event) {
+					       
+	                	   //var source  = event.target.data.source;
+	                	   //var target = event.target.data.target;
+	                	   //vis.select([event.target,vis.node(source),vis.node(target)]); //选中
+						   
+						   var edge = event.target;
+						   var label=edge.data.label,tooltip=edge.data.tooltip,color=edge.data.color;
+							$("#menu_edit_edge_tooltip").find("span.span_label").text(label);
+							$("#menu_edit_edge_tooltip").find("span.span_tooltip").text(tooltip);
+							$("#menu_edit_edge_tooltip").find("span.span_color").text(color);
+						   $("#menu_edit_edge_tooltip").dialog();
+	                   });
+	                   //悬停离开线条
+	                   vis.addListener("mouseout", "edges", function(event) {
+	                	   //vis.deselect();  //取消选中
+						   $("#menu_edit_edge_tooltip").dialog("close");
+	                   });
+					   */
+	                   //点击节点
+	                   vis.addListener("click", "nodes", function(event) {
+						   if(line_mode){return;}//连线模式,不弹框
+	                	   var node = event.target;
+						   var name=node.data.name,ip=node.data.ip,type=node.data.type;
+							$("#menu_edit_detial").find("span.span_name").text(name);
+							$("#menu_edit_detial").find("span.span_ip").text(ip);
+							var type_str = "";
+							if( type == "terminal"){
+								type_str= "终端"; 
+							}else if( type == "host"){
+								type_str= "服务器"; 
+							}else if( type == "mid"){
+								type_str= "中间件"; 
+							}else if( type == "db"){
+								type_str= "数据库"; 
+							}
+							$("#menu_edit_detial").find("span.span_type").text(type_str);
+	                        $("#menu_edit_detial").dialog();
+	                   });
+	                   //点击线条
+	                   vis.addListener("click", "edges", function(event) {
+	                	   var edge = event.target;
+						   var label=edge.data.label,tooltip=edge.data.tooltip,color=edge.data.color;
+							$("#menu_edit_edge_detail").find("span.span_label").text(label);
+							$("#menu_edit_edge_detail").find("span.span_tooltip").text(tooltip);
+							$("#menu_edit_edge_detail").find("span.span_color").text(color);
+	                       $("#menu_edit_edge_detail").dialog();
+	                   });
+					   /*
+	                   //添加节点的点击事件
+	                   vis.addListener("click", "nodes", function(event) {
+						   
+	                       //var ids = [];
+	                       //vis.select("nodes", ids);
+	                       //var node = vis.node(event.target.data.id);
+	                       var node = event.target;
+						   //var node = vis.selected();
+						   var neighborNode = vis.firstNeighbors([node], false);
+						   //vis.select(neighborNode.edges);
+						   //for (var i in neighborNode.edges) {
+							//   alert( "edge." + neighborNode.edges[i].data.id);
+						  // }
+	                   });
+					   //图报错时执行的方法
+					   vis.addListener("error", function(err) {
+							alert(err.value.msg);
+					   });
+	                 	*/
+	               }); // end vis.ready
+				
+			}); //end ready
+			
+			//--------------------------------flex回调js方法,添加连线和添加节点--------------------------//
+			function _configAddElementsData(type,data){
+
+				if( type == "node" ){}else if( type == "edge"){
+			
+				  //alert("爱你一万年---连线"+data.id+"--"+data.source+"--"+data.target);
+			
+				  //切记: 请在这里一定要添加连线,不然无效
+					
+					  var edge = { id: data.id,
+								   source: data.source,
+								   target: data.target,
+								   directed:		false,
+									network:		15,
+									width:			2,
+									label: 			"a08 (15) a08", 
+									lineStyle: 		"SOLID"
+								 };
+
+					var edge = vis.addEdge(edge, true);
+					
+				}
+				return null;	//无需更改
+			}
+			
+			/**
+			 * 配置控制台参数---注意:本方法名不可以修改
+			 *　本函数独立区分于ctyoscapeweb的配置方式,降低耦合,本方法由控制台(自定义组件)直接调用.
+			 */
+			function  _initConsoleBoxParam(){
+				//参数对象----注意:所有字段不可以修改,不支持自定义字段
+				var setParameters = {
+					//控制跟随的背景图片,有缺陷,节点需要x,y偏移才能使用.
+					backgroundFollowImg:{
+						//xOffset:-20,		//程序定位大概的坐标后,在通过此变量精确调整x坐标
+						//yOffset:15,		//程序定位大概的坐标后,在通过此变量精确调整y坐标
+						isShow:true,	//只有配置了才显示,默认为false,
+						timer:1000,	 	//用于背景图片的延时加载,单位毫秒,默认1000毫秒(1秒),
+						//followNode:"A01",	//Management这里用节点的Label或者Id来进行控制,(这个节点选用左上角节点作为背景图的对应点)
+						url:"img/bg.jpg"
+					}
+				}
+				return setParameters;
+			}
+			
+			//配合添加连线使用
+			var _srcId; //全局变量
+			function clickNodeToAddEdge(evt) {
+				if (_srcId != null) {
+					vis.removeListener("click", "nodes", clickNodeToAddEdge);
+					var e = vis.addEdge({ source: _srcId, 
+										  target: evt.target.data.id,
+										  color:line_mode_obj.color,
+										  weight:line_mode_obj.weight,
+										  targetArrowShape:line_mode_obj.arrow
+										}, true);
+					_srcId = null;
+					line_mode = false;
+				}else{
+					//点击第一节点为null
+					_srcId = evt.target.data.id;
+				}
+			}
+			
+		</script>
+	</body>
+</html>

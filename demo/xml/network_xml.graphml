@@ -1,0 +1,67 @@
+<graphml>
+
+  <!-- 设置自定义属性*******节点******* 
+	   只有一个内置字段id,(string类型,如果不指定,系统自动生成) 节点的唯一标示,下面配置都是自定义字段
+  -->
+  <key id="label"    for="node" attr.name="label"    attr.type="string"/><!--显示标签 -->
+  <key id="shape"    for="node" attr.name="shape"    attr.type="string"><default>RECTANGLE</default></key><!--节点形状,默认矩形RECTANGLE -->
+  <key id="flicker"  for="node" attr.name="flicker"  attr.type="boolean"><default>false</default></key><!--控制闪烁,不需要修改-->
+  <key id="weight"   for="node" attr.name="weight"   attr.type="int"><default>48</default></key><!--节点尺寸,默认48px -->
+  <key id="imgtype"  for="node" attr.name="imgtype"  attr.type="string"/><!--节点图片 -->
+  <key id="tooltip"  for="node" attr.name="tooltip"  attr.type="string"><default></default></key><!--悬停提示 -->
+  <key id="x"   	 for="node" attr.name="x"   	 attr.type="int"/><!-- X坐标 -->
+  <key id="y"        for="node" attr.name="y"   	 attr.type="int"/><!-- Y坐标 -->
+  <key id="name"    for="node"  attr.name="name"    attr.type="string"/><!--姓名 -->
+  <key id="ip"      for="node"  attr.name="ip"      attr.type="string"/><!--ip地址 -->
+  <key id="type"    for="node"  attr.name="type"    attr.type="string"/><!--类型 -->
+  
+  <!-- 设置自定义属性*******连线******* 
+	   只有3个内置字段id(连线的id,string类型,如果不指定,系统自动生成),source(开始节点id),target(目标节点id),,下面配置都是自定义字段
+  -->
+  <key id="label"    for="edge" attr.name="label"    attr.type="string"/><!--显示标签 -->
+  <key id="weight"   for="edge" attr.name="weight"   attr.type="int"><default>1</default></key><!--连线尺寸,默认1px -->
+  <key id="color"    for="edge" attr.name="color"    attr.type="string"><default>#c1c1c1</default></key><!--连线颜色 -->
+  <key id="tooltip"  for="edge" attr.name="tooltip"  attr.type="string"><default></default></key><!--悬停提示 -->
+  <key id="sourceArrowShape"  for="edge" attr.name="sourceArrowShape"  attr.type="string"><default>none</default></key><!--起点形状 -->
+  <key id="targetArrowShape"  for="edge" attr.name="targetArrowShape"  attr.type="string"><default>delta</default></key><!--终点形状 -->
+  
+  <graph edgedefault="undirected"><!-- 透过这个变量设定连线方向 directed有方向,undirected无方向-->
+    <!-- 设置节点数据 -->
+    <node id="a01">
+		<data key="name">我是a01</data><data key="ip">1.1.1.1</data><data key="type">mid</data>
+		<data key="label">A01</data><data key="imgtype">img/node1.png</data><data key="x">400</data><data key="y">100</data></node>
+	<node id="a02">
+		<data key="name">我是a02</data><data key="ip">2.2.2.2</data><data key="type">host</data>
+		<data key="label">A02</data><data key="imgtype">img/node2.png</data><data key="x">140</data><data key="y">140</data></node>
+	<node id="a03">
+		<data key="name">我是a03</data><data key="ip">3.3.3.3</data><data key="type">db</data>
+		<data key="label">A03</data><data key="imgtype">img/node3.png</data><data key="x">200</data><data key="y">200</data></node>
+	<node id="a04">
+		<data key="name">我是a04</data><data key="ip">4.4.4.4</data><data key="type">terminal</data>
+		<data key="label">A04</data><data key="imgtype">img/node4.png</data><data key="x">300</data><data key="y">300</data></node>
+	<node id="a05">
+		<data key="name">我是a05</data><data key="ip">5.5.5.5</data><data key="type">terminal</data>
+		<data key="label">A05</data><data key="imgtype">img/node5.png</data><data key="x">400</data><data key="y">400</data></node>
+    <!-- 设置连线数据 -->
+    <edge target="a01" source="a02"><data key="weight">2</data><data key="label">a01 (15) a02</data>
+		<data key="tooltip">a01 (15) a02</data>
+		<data key="sourceArrowShape">none</data><!--起点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+		<data key="targetArrowShape">none</data><!--终点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+	</edge>
+	<edge target="a02" source="a03"><data key="weight">3</data><data key="label">a02 (15) a03</data>
+		<data key="tooltip">a02 (15) a03</data>
+		<data key="sourceArrowShape">none</data><!--起点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+		<data key="targetArrowShape">arrow</data><!--终点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+	</edge>
+	<edge target="a03" source="a04" ><data key="weight">4</data><data key="label">a03 (15) a04</data>
+		<data key="tooltip">a03 (15) a04</data>
+		<data key="sourceArrowShape">circle</data><!--起点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+		<data key="targetArrowShape">t</data><!--终点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+	</edge>
+	<edge target="a04" source="a05"><data key="weight">5</data><data key="label">a04 (15) a05</data>
+		<data key="tooltip">a04 (15) a05</data>
+		<data key="sourceArrowShape">delta</data><!--起点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+		<data key="targetArrowShape">diamond</data><!--终点样式: NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型) -->
+	</edge>
+  </graph>
+</graphml>

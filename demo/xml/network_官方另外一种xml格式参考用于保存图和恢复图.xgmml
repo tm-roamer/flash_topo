@@ -1,0 +1,25 @@
+<graph label="Cytoscape Web" directed="1" Graphic="1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cy="http://www.cytoscape.org" xmlns="http://www.cs.rpi.edu/XGMML">
+  <att name="documentVersion" value="0.1"/>
+  <att type="string" name="backgroundColor" value="#ccccff"/>
+  <att type="real" name="GRAPH_VIEW_ZOOM" value="1"/>
+  <att type="real" name="GRAPH_VIEW_CENTER_X" value="240.90000000000003"/>
+  <att type="real" name="GRAPH_VIEW_CENTER_Y" value="188.04999999999995"/>
+  <node id="-55" name="" label="MINT">
+    <att name="node.fillColor" type="string" value="0,153,255"/>
+    <graphics x="299.3" y="87.19999999999999" cy:nodeLabelFont="SansSerif-0-12" type="ELLIPSE" width="1" outline="#666666" h="40" labelanchor="c" cy:nodeTransparency="1" w="40" fill="#0099ff"/>
+  </node>
+  <node id="-38" name="" label="BioGRID">
+    <att name="node.fillColor" type="string" value="0,153,255"/>
+    <graphics x="96.45000000000002" y="154" cy:nodeLabelFont="SansSerif-0-12" type="ELLIPSE" width="1" outline="#666666" h="40" labelanchor="c" cy:nodeTransparency="1" w="40" fill="#0099ff"/>
+  </node>
+  <edge source="-55" id="1" target="-23" label="MINT (exchange_IMEx) IntAct" directed="true">
+    <att name="interaction" type="string" value="exchange_IMEx"/>
+    <graphics width="1" cy:targetArrowColor="#000000" cy:edgeLineType="SOLID" cy:sourceArrow="0" cy:sourceArrowColor="#000000" cy:targetArrow="0" fill="#011e59"/>
+  </edge>
+  <edge source="-38" id="2" target="-65" label="BioGRID (exchange) S.pombe@GeneDB" directed="true">
+    <att name="interaction" type="string" value="exchange"/>
+    <graphics width="1" cy:targetArrowColor="#000000" cy:edgeLineType="SOLID" cy:sourceArrow="0" cy:sourceArrowColor="#000000" cy:targetArrow="0" fill="#011e59"/>
+  </edge>
+
+
+</graph>

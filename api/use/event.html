@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>交互监听</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">交互监听</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#交互监听基本说明">交互监听基本说明</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#监听示例说明">监听示例说明</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="交互监听基本说明"></a>交互监听基本说明</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>支持的监听事件包括:(它并没有提供mousemove的监听接口)</p>
+<p>click: 点击事件</p>
+<p>dblclick: 双击事件</p>
+<p>dragstart: 开始拖拽,只支持节点</p>
+<p>dragstop: 拖拽结束,只支持节点</p>
+<p>mouseover: 鼠标悬停</p>
+<p>mouseout: 鼠标离开</p>
+<p>select: 选中,可以是单个元素,也可能是多个元素,需要判断</p>
+<p>deselect: 取消选中</p>
+<p>filter: 过滤监听,配合vis.filter使用,例:vis.filter("nodes", <a href="'n01',">'n02'</a>);(只显示n01,n02)</p>
+<p>zoom: 监听控制台的放大缩小</p>
+<p>layout: 切换布局的监听事件</p>
+<p>contextmenu: 右击菜单的监听事件</p>
+<p>error: 报错时触发</p>
+<div class="hr"><b></b></div>
+<h1><a name="监听示例说明"></a>监听示例说明</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//!!!!!!!!!!!!!!!!!!! 监听一般都是写在这里的,因为只有当vis初始化完成后再监听才有意义!!!!!!!!!!!!!!!!!!
+	vis.ready(function() {
+		
+		//监听click事件------面板
+		vis.addListener("click", "none", function(evt) {
+			alert("--");
+		})
+		//监听click事件------节点
+		.addListener("click", "nodes", function(evt) {
+			alert("--");
+		})
+		//监听click事件------连线
+		.addListener("click", "edges", function(evt) {
+			var edge = evt.target;
+			alert("Edge " + edge.data.id + " was clicked");
+		})
+		//监听选中事件------节点
+		.addListener("select", "nodes", function(evt) {
+			var nodes = evt.target;
+			//vis.selected().length; !!!!!!!用这句话判断选中数量!!!!!!!
+			alert(nodes.length + " node(s) selected");
+		});
+		//监听控制台缩小放大事件
+		.addListener("zoom", function(evt) {
+			var zoom = evt.value;
+			alert("New zoom value is " + (zoom * 100) + "%");
+		})
+		//---------------------------------以下是官方demo提供的flex右键菜单的绑定写法---------------------------//
+		//---------------------------------可以拿来直接使用-----------------------------------------------------//
+		vis.addContextMenuItem("Delete node", "nodes", function(evt) {		//右击节点,出现删除节点菜单
+			vis.removeNode(evt.target.data.id, true);
+		})
+		.addContextMenuItem("Delete edge", "edges", function(evt) {			//右击连线,出现删除连线菜单
+			vis.removeEdge(evt.target.data.id, true);
+		})
+		.addContextMenuItem("Add new node", function(evt) {					//右击面板(画板,屏幕,工作区叫什么都行),出现删除连线菜单
+			var x = evt.mouseX;
+			var y = evt.mouseY;
+			var parentId;
+			if (evt.target != null &amp;&amp; evt.target.group == "nodes") {
+				parentId = evt.target.data.id;
+				x = evt.target.x;
+				y = evt.target.y;
+				x += Math.random() * (evt.target.width/3) * (Math.round(Math.random()*100)%2==0 ? 1 : -1);
+				y += Math.random() * (evt.target.height/3) * (Math.round(Math.random()*100)%2==0 ? 1 : -1);
+			}
+			var n = vis.addNode(x, y, { parent: parentId }, true);
+			n.data.label = n.data.id;
+			vis.updateData([n]);
+		})
+		.addContextMenuItem("Add new edge", "nodes", function(evt) {		//右击节点,出现添加连线菜单
+			_srcId = evt.target.data.id;
+			vis.removeListener("click", "nodes", clickNodeToAddEdge);
+			vis.addListener("click", "nodes", clickNodeToAddEdge);
+		})
+		.addContextMenuItem("Delete selected", function(evt) {				//右击面板,出现删除选中菜单
+			var items = vis.selected();
+			if (items.length &gt; 0) { vis.removeElements(items, true); }
+		});
+	});
+
+	//监听错误事件
+	vis.addListener("error", function(err) {
+		alert(err.value.msg);
+	});
+	
+	//配合添加连线使用
+	var _srcId; //全局变量
+	function clickNodeToAddEdge(evt) {
+		if (_srcId != null) {
+			vis.removeListener("click", "nodes", clickNodeToAddEdge);
+			var e = vis.addEdge({ source: _srcId, target: evt.target.data.id }, true);
+			_srcId = null;
+		}
+	}
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

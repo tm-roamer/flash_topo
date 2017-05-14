@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>需求定制部分</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">需求定制部分</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#需求定制部分">需求定制部分</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#要求网络元素可以添加、拖动、连线和布局，符合一般操作习惯，可参照visio；">要求网络元素可以添加、拖动、连线和布局，符合一般操作习惯，可参照visio；</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#添加,修改,删除功能,入口在界面上,需要可扩展字段">添加,修改,删除功能,入口在界面上,需要可扩展字段</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#连线时弹出可配置数据,配置连线方向,颜色,粗细">连线时弹出可配置数据,配置连线方向,颜色,粗细.</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#看是否支持界面节点的自动布局?">看是否支持界面节点的自动布局?</a></div>
+</li>
+<li>
+<div><span class="num">6</span><a href="#以上操作可在界面上操作,也能通过api接口进行">以上操作可在界面上操作,也能通过api接口进行</a></div>
+</li>
+<li>
+<div><span class="num">7</span><a href="#用户编辑后的拓扑图应能保存">用户编辑后的拓扑图应能保存</a></div>
+</li>
+<li>
+<div><span class="num">8</span><a href="#拓扑连线的文字和节点文字颜色应该也能自定义吧?">拓扑连线的文字和节点文字颜色应该也能自定义吧?</a></div>
+</li>
+<li>
+<div><span class="num">9</span><a href="#连线可以灵活定制颜色、宽度和方向；">连线可以灵活定制颜色、宽度和方向；</a></div>
+</li>
+<li>
+<div><span class="num">10</span><a href="#拓扑图可以放大、缩小、刷新；">拓扑图可以放大、缩小、刷新；</a></div>
+</li>
+<li>
+<div><span class="num">11</span><a href="#点击设备可以弹出框或者悬浮框">点击设备可以弹出框或者悬浮框</a></div>
+</li>
+<li>
+<div><span class="num">12</span><a href="#拓扑图应能灵活的嵌入页面">拓扑图应能灵活的嵌入页面</a></div>
+</li>
+<li>
+<div><span class="num">13</span><a href="#提供易用的数据接口。">提供易用的数据接口。</a></div>
+</li>
+<li>
+<div><span class="num">14</span><a href="#联动接口">联动接口</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="需求定制部分"></a>需求定制部分</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>根据需求将功能实现整理如下</p>
+<div class="hr"><b></b></div>
+<h1><a name="要求网络元素可以添加、拖动、连线和布局，符合一般操作习惯，可参照visio；"></a>要求网络元素可以添加、拖动、连线和布局，符合一般操作习惯，可参照visio；</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>//---------------------------------添加/更新/删除节点和连线的官方实现(右击菜单)-----------------------------------------------------//
+vis.addContextMenuItem("Delete node", "nodes", function(evt) {		//右击节点,出现删除节点菜单
+	vis.removeNode(evt.target.data.id, true);
+})
+.addContextMenuItem("Delete edge", "edges", function(evt) {			//右击连线,出现删除连线菜单
+	vis.removeEdge(evt.target.data.id, true);
+})
+.addContextMenuItem("Add new node", function(evt) {					//右击面板(画板,屏幕,工作区叫什么都行),出现删除连线菜单
+	var x = evt.mouseX;
+	var y = evt.mouseY;
+	var parentId;
+	if (evt.target != null &amp;&amp; evt.target.group == "nodes") {
+		parentId = evt.target.data.id;
+		x = evt.target.x;
+		y = evt.target.y;
+		x += Math.random() * (evt.target.width/3) * (Math.round(Math.random()*100)%2==0 ? 1 : -1);
+		y += Math.random() * (evt.target.height/3) * (Math.round(Math.random()*100)%2==0 ? 1 : -1);
+	}
+	var n = vis.addNode(x, y, { parent: parentId }, true);
+	n.data.label = n.data.id;
+	vis.updateData([n]);
+})
+.addContextMenuItem("Add new edge", "nodes", function(evt) {		//右击节点,出现添加连线菜单
+	_srcId = evt.target.data.id;
+	vis.removeListener("click", "nodes", clickNodeToAddEdge);
+	vis.addListener("click", "nodes", clickNodeToAddEdge);
+})
+.addContextMenuItem("Delete selected", function(evt) {				//右击面板,出现删除选中菜单
+	var items = vis.selected();
+	if (items.length &gt; 0) { vis.removeElements(items, true); }
+});
+
+//配合添加连线使用
+var _srcId; //全局变量
+function clickNodeToAddEdge(evt) {
+	if (_srcId != null) {
+		vis.removeListener("click", "nodes", clickNodeToAddEdge);
+		var e = vis.addEdge({ source: _srcId, target: evt.target.data.id }, true);
+		_srcId = null;
+	}
+}
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="添加,修改,删除功能,入口在界面上,需要可扩展字段"></a>添加,修改,删除功能,入口在界面上,需要可扩展字段</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//官网实现是右击, 如果放在界面上也很容易,只不过不选中情况下编辑,删除按钮是不可用的,选中才是可用的
+	vis.addListener("select", "nodes", function(evt) {
+		$(编辑按钮).可用;
+		$(删除按钮).可用;
+	})
+	.addListener("deselect", "nodes", function(evt) {
+		$(编辑按钮).不可用;
+		$(删除按钮).不可用;
+	});
+	
+	//添加连线功能, 上面小节代码已经有示例代码,故不重复书写了.
+	//流程说明: 
+		(1)添加连线按钮默认不可用
+		(2)点击第一个节点
+		(3)添加连线变成可用
+		(4)点击添加连线按钮
+		(5)点击第二个节点
+		(6)完成连线
+	
+	//关于扩展字段,参考vis.draw()方法中的network字段设置,.graphml格式和json格式
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="连线时弹出可配置数据,配置连线方向,颜色,粗细"></a>连线时弹出可配置数据,配置连线方向,颜色,粗细.</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//流程说明: 
+		(1)添加连线按钮默认不可用
+		(2)点击第一个节点
+		(3)添加连线变成可用
+		(4)点击添加连线按钮(弹出配置连线的dialog,配置方向,颜色,粗细)
+		(5)点击第二个节点
+		(6)完成连线
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="看是否支持界面节点的自动布局?"></a>看是否支持界面节点的自动布局?</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参考本文档的布局章节</p>
+<div class="hr"><b></b></div>
+<h1><a name="以上操作可在界面上操作,也能通过api接口进行"></a>以上操作可在界面上操作,也能通过api接口进行</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参考本文档的api部分, cytoscapweb本身的特质就是用js作为控制层和业务层, flex只是展示层, 通过js来调用flex展现.</p>
+<div class="hr"><b></b></div>
+<h1><a name="用户编辑后的拓扑图应能保存"></a>用户编辑后的拓扑图应能保存</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	使用方式的实验测试,
+		如果我用json方式构建数据,那么只能用vis.networkModel()获取数据
+		如果我用graphml的方式构建数据,那么只能用vis.graphml()获取数据
+
+	//json方式保存
+	$.ajax({url : "保存的后台地址",
+			async	: true,		//false为同步
+			dataType: 'json',
+			data:{bgColor:背景色,zoom:vis.zoom();缩放比例,elements:vis.networkModel() json数据对象},
+			success	: function(){}
+	});
+	//xml方式保存方式
+	$.ajax({url : "保存的后台地址",
+			async	: true,		//false为同步
+			dataType: 'json',
+			data:{bgColor:背景色,zoom:vis.zoom();缩放比例,elements:vis.graphml() xml数据字符串},
+			success	: function(){}
+	});
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="拓扑连线的文字和节点文字颜色应该也能自定义吧?"></a>拓扑连线的文字和节点文字颜色应该也能自定义吧?</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参考本文档的样式章节</p>
+<div class="hr"><b></b></div>
+<h1><a name="连线可以灵活定制颜色、宽度和方向；"></a>连线可以灵活定制颜色、宽度和方向；</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参考本文档的样式章节</p>
+<div class="hr"><b></b></div>
+<h1><a name="拓扑图可以放大、缩小、刷新；"></a>拓扑图可以放大、缩小、刷新；</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//参考本文档的全局设置章节里面有zoom放大缩小控制台的显示控制
+	
+	//针对刷新更新数据建议采用
+	vis.updateData()来更新数据,vis.VisualStyleBypass()来修改少量样式, (移步api示例)
+	{{{&lt;java&gt;
+		// 1: 更新第一个节点:
+		var n = vis.nodes()[0];
+		n.data.label = "New Label...";
+		n.data.weight *= 2;
+		vis.updateData([n]);
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="点击设备可以弹出框或者悬浮框"></a>点击设备可以弹出框或者悬浮框</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//监听click事件------面板
+	vis.addListener("click", "none", function(evt) {
+		alert("我是弹出框");
+	})
+	//全局设置章节有提到flex自己实现的tooltip功能,如果不能满足要求,请看下面示例
+	.addListener("mousemove", "none", function(evt) {
+		alert("我是悬浮框,出来啦啦啦啦");
+	})
+	.addListener("moveout", "none", function(evt) {
+		alert("我是悬浮框,隐藏啦啦啦啦");
+	})
+
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="拓扑图应能灵活的嵌入页面"></a>拓扑图应能灵活的嵌入页面</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>最好将一个topo图写入在一个独立的iframe里面,这样比较好控制,不管是样式和按钮监听事件,或者浏览器兼容都比较方便</p>
+<p>经验我曾尝试将2个topo图放在同一个jsp页面里, 具体原因忘记了, 大概的情况是ie8找不到第二个topo图,后来又将topo图重写放在2个独立的iframe里,解决了问题.</p>
+<div class="hr"><b></b></div>
+<h1><a name="提供易用的数据接口。"></a>提供易用的数据接口。</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>已经提供的示例中已经基本涵盖了数据调用接口, 本文档也进一步细化了api使用方式.</p>
+<div class="hr"><b></b></div>
+<h1><a name="联动接口"></a>联动接口</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参考本文档的监听章节</p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

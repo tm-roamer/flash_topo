@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>整体设计</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">整体设计</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#整体设计">整体设计</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#UI元素说明">UI元素说明</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#功能分解(1)工具条置灰效果(仅供参考)">功能分解(1)工具条置灰效果(仅供参考)</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#功能分解(2)工具条联动机制">功能分解(2)工具条联动机制</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#功能分解(3)操作区的接口联动机制">功能分解(3)操作区的接口联动机制</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="整体设计"></a>整体设计</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>如下图参考官网页面结构<img src="../imgs/design.png"/></p>
+<p>模仿页面<img src="../imgs/design2.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="UI元素说明"></a>UI元素说明</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>以下讲解均默认采用jquery语法,</p>
+<p>UI元素均采用jquery ui进行说明,如使用其他插件的UI元素,更换相关语法即可.</p>
+<p>http://jqueryui.com/语法示例:</p>
+<pre>	 &lt;script&gt;
+		$(function() {
+			//UI Button
+			$("input[type=submit], a, button").button().click(function(event){
+				event.preventDefault(); //取消默认事件
+			});
+			
+			//UI Dialog (非模式,可以拖拽,不锁死屏幕)
+			$( "#dialog" ).dialog();
+			
+			//UI Tab
+			$( "#tabs" ).tabs();
+		});
+	&lt;/script&gt;
+	
+	&lt;body&gt;
+		&lt;!-- UI Button --&gt;
+		&lt;button&gt;A button element&lt;/button&gt;
+		&lt;input type="submit" value="A submit button"&gt;
+		&lt;a href="#"&gt;An anchor&lt;/a&gt;
+		
+		&lt;!-- UI Dialog --&gt;
+		&lt;div id="dialog" title="Basic dialog"&gt;
+			&lt;p&gt;This is the default dialog which is useful for displaying information. 
+				The dialog window can be moved, resized and closed with the 'x' icon.&lt;/p&gt;
+		&lt;/div&gt;
+		
+		&lt;!-- UI Tab --&gt;
+		&lt;div id="tabs"&gt;
+			&lt;ul&gt;
+				&lt;li&gt;&lt;a href="#tabs-1"&gt;Nunc tincidunt&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a href="#tabs-2"&gt;Proin dolor&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a href="#tabs-3"&gt;Aenean lacinia&lt;/a&gt;&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;div id="tabs-1"&gt;
+				&lt;p&gt;Proin elit arcu, rutrum commodo, vehicula tempus, &lt;/p&gt;
+			&lt;/div&gt;
+			&lt;div id="tabs-2"&gt;
+				&lt;p&gt;Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, &lt;/p&gt;
+			&lt;/div&gt;
+			&lt;div id="tabs-3"&gt;
+				&lt;p&gt;Mauris eleifend est e .&lt;/p&gt;
+			&lt;/div&gt;
+			&lt;/div&gt;
+	&lt;/body&gt;
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="功能分解(1)工具条置灰效果(仅供参考)"></a>功能分解(1)工具条置灰效果(仅供参考)</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	&lt;!-- &lt;li&gt;标签和&lt;a&gt;统一加入class="disabled" --&gt;
+	&lt;li class="disabled"&gt;&lt;a href="javascript://" class="disabled" id="menu_save"&gt;保存&lt;/a&gt;&lt;/li&gt;
+</pre>
+<p>示例图片<img src="../imgs/menubar2.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="功能分解(2)工具条联动机制"></a>功能分解(2)工具条联动机制</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>讲解:第一步:监听点击事件</p>
+<p>第二步:弹出Dialog框,填写表单</p>
+<p>第三步:调用Flex接口,执行操作</p>
+<p>示例图片<img src="../imgs/menubar1.png"/></p>
+<p>以添加节点为例:</p>
+<pre>	/**
+	 *--------------------------------------工具栏--------------------------------------
+	 */
+	//保存
+	$("#menu_save").click(function(){});
+	//导入
+	$("#menu_import").click(function(){});	
+	//导出
+	$("#menu_export").click(function(){});
+	//添加节点
+	$("#menu_add_node").click(function(){
+		$("#menu_add_ialog").dialog({
+			buttons: {
+				"确定": function() {
+					$( this ).dialog( "close" );
+					
+					//添加节点代码(我太懒了,没有处理表单,原谅我吧)
+					var data = { id: "n_qq",
+								 label: "我是新添加的",
+								 imgtype: "img/node_add.png"};
+					var node1 = vis.addNode(50/*x坐标*/, 50/*y坐标*/, data/*数据*/, true/*是否立刻绘制*/);
+				},
+				"取消": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+	});
+	//修改节点
+	$("#menu_edit_node").click(function(){});
+	//删除节点
+	$("#menu_del_node").click(function(){});
+	//添加连线
+	$("#menu_add_edge").click(function(){});
+	//修改连线
+	$("#menu_edit_edge").click(function(){});
+	//删除连线
+	$("#menu_del_edge").click(function(){});
+	//更换布局
+	$("#menu_layout_select").click(function(){});
+	//修改样式
+	$("#menu_style").click(function(){});
+	//刷新
+	$("#menu_refresh").click(function(){});
+	
+	&lt;div id="menu_add_ialog" title="Basic dialog"&gt;
+		&lt;form&gt;&lt;/form&gt;
+	&lt;/div&gt;
+</pre>
+<p>示例图片:</p>
+<p><img src="../imgs/menubar3.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="功能分解(3)操作区的接口联动机制"></a>功能分解(3)操作区的接口联动机制</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>讲解:第一步:监听Flex的点击事件</p>
+<p>第二步:操作区联动或者弹出Dialog框,</p>
+<p>第三步:调用Ajax接口,交互数据</p>
+<p>示例页面代码:</p>
+<pre>	vis.ready(function() { //vis就是topo图对象,ready就是初始化完成执行的方法
+	   //点击节点
+	   vis.addListener("click", "nodes", function(event) {
+		   var node = event.target;
+		   //node.data就是获取数据
+		   alert("点击节点"+node.data.label);
+		   $(".tab_content").find("input").val("我太懒了,算我联动了吧");
+	   });
+	   //点击连线
+	   vis.addListener("click", "edges", function(event) {
+		   var edge = event.target;
+		   //edge.data就是获取数据
+		   alert("点击连线"+edge.data.label);
+		   $(".tab_content").find("input").val("我太懒了,算我联动了吧");
+	   });
+	});
+</pre>
+<p>示例图片<img src="../imgs/workspace1.png"/></p>
+<p><img src="../imgs/workspace2.png"/></p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

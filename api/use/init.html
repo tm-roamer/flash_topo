@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>初始化设置</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">初始化设置</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#初始化设置">初始化设置</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="初始化设置"></a>初始化设置</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>页面代码部分:</p>
+<pre>	&lt;!-- 拓扑图div --&gt;
+	&lt;div id="cytoscapeweb" &gt;
+		Cytoscape Web will replace the contents of this div with your graph.
+	&lt;/div&gt;
+</pre>
+<p>JS代码部分:</p>
+<pre>	//---------------------------------初始化flex图形---------------------------------------------//
+	var div_id = "cytoscapeweb";	//显示拓扑图的&lt;div&gt;id,
+	var options = {
+		  swfPath : "flash/CytoscapeWeb",					//主程序.swf文件
+		  flashInstallerPath : "flash/playerProductInstall",//本地的flash安装路径.swf文件
+		  //flashAlternateContent:"",	//flash没有打开的空白文字
+		  //resourceBundleUrl:"",		//国际化文字.properties文件
+		  //idToken:"home" 				//一个页面多个topo图时,自定义id,通常不需要配置
+		  //mouseDownToDragDelay:400 	//鼠标选中节点,按住400毫秒,即可选中相关联的所有节点,设置1即不激活.默认400毫秒
+	};
+	//!!!可以将vis设为全局变量!!!
+	var vis = new org.cytoscapeweb.Visualization(div_id, options);	//取得了拓扑图对象
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

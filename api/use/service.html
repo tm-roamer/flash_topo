@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>第三步创建service</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">第三步创建service</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#新建一个service">新建一个service</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#小结">小结</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="新建一个service"></a>新建一个service</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>当我们在/service目录下写一个service类时,只要继承AbstractTableTemplateService<img src="T"/>,设置一下类头部就可以了.</p>
+<p>创建service太简单,空实现就可以,需要实现业务功能就在自己的service发挥吧.</p>
+<p>图例如下:<img src="../imgs/service1.png"/></p>
+<p>示例代码如下:</p>
+<pre>/**
+ * service
+ */
+@IocBean(name="TableTemplateService")
+public class TableExampleService extends AbstractTableTemplateService&lt;TableExampleObject&gt;{
+}
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="小结"></a>小结</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>恭喜你已经完成service的创建,知道为什么最后一步创建jsp了吧</p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

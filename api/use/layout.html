@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>布局设置</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">布局设置</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#布局基本说明">布局基本说明</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#ForceDirected布局">ForceDirected布局</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#Circle布局">Circle布局</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#Radial布局">Radial布局</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#Tree布局">Tree布局</a></div>
+</li>
+<li>
+<div><span class="num">6</span><a href="#Preset布局">Preset布局</a></div>
+</li>
+<li>
+<div><span class="num">7</span><a href="#CompoundSpringEmbedder布局">CompoundSpringEmbedder布局</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="布局基本说明"></a>布局基本说明</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>关于布局的参数解释都是自己的试验结果和总结的一点心得, 大家最好还是去官网查阅英文文档,我下面翻译解释的难免有纰漏.</p>
+<p>ForceDirected 力导向布局,也是cytoscapeweb实现的最复杂最好的布局方式.可配置参数比较多.</p>
+<p>Circle 	圆型布局</p>
+<p>Radial  辐射状的,放射式的布局</p>
+<p>Tree 	树形布局</p>
+<p>Preset  预设布局, 自定义X,Y坐标, 这样有个好处, 可以通过javascript或者java来计算布局算法.</p>
+<p>CompoundSpringEmbedder 组布局, 仅适用于节点分组的情况使用.</p>
+<div class="hr"><b></b></div>
+<h1><a name="ForceDirected布局"></a>ForceDirected布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"ForceDirected",
+	 options:{
+		//mass {Number}: 节点的默认质量值。
+		//gravitation {Number}: 引力（或排斥，负值）之间的节点。
+		//tension {Number}: 边缘的默认弹簧的张力。
+		//restLength {Number}: 节点之间的间距!!!!!!!!!
+		//drag {Number}: 阻力系数的摩擦阻力。
+		//iterations {Number}: 迭代运行模拟迭代次数。
+		//maxTime {Number}: 最大时限最长时间运行的模拟，以毫秒为单位。
+		//minDistance {Number}: 最小有效距离超过力作用。任何小的距离将被视为最小。
+		//maxDistance {Number}: 最大距离超过力作用。更大的距离将被忽略。
+		//seed {Number}: 可选的正整数，它是用来产生初始节点位置设置随机种子。力导向布局是天生的非确定性，但这个选项可以用来复制相同的拓扑结构。把这个属性没有定义或设置0如果你想保持布局的不确定性（即一个随机种子用）。
+		//autoStabilize {Boolean}: 布尔与力导向布局的一个常见的问题是，他们可以是非常不稳定的。如果此参数为true和边缘被过度拉伸，在每次迭代中，Cytoscape的Web自动试图稳定的网络。稳定的尝试是确定的迭代次数后执行，直到每边长度是常数或直至达到最大时限。设置为false，如果你认为结果看起来比预期更糟，或如果布局是执行时间太长。
+		//weightAttr {String}: 字符串包含权重的边缘属性名称。默认值为零，这意味着布局是无权就边。如果你想生成一个边缘加权的布局，你只需要提供数据的属性，应作为权重的名字。
+		//weightNorm {String}: "linear", "invlinear" , "log" 默认是"linear".
+		//minWeight {Number}: 考虑最小边的权重，如果布局设置为加权。不如果你想要布局来呈现数据得到的边缘的最小重量指定任何值（过滤掉的边缘被忽略）。一个体重的边缘波纹管的最低需要一样的最小重量的边缘。
+		//maxWeight {Number}: 最大的边的权重考虑，如果布局设置为加权。不如果你想要布局来呈现边缘的数据得到的最大重量指定任何值（过滤掉的边缘被忽略）。与上面的最大重量的任何边缘将把相同的最大重量的边缘。
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"ForceDirected",
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="Circle布局"></a>Circle布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"Circle",
+	 options:{
+		angleWidth:100,	//angleWidth {Number}: 节点之前的夹角宽度
+		tree:true		// tree {Boolean}: 实验结果: true的情况圆中心会出现中心节点,false的情况所有点围成一个圈,没有中心点
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"Circle",
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="Radial布局"></a>Radial布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"Radial",
+	 options:{
+		angleWidth:100,	//angleWidth {Number}: 节点之前的夹角宽度
+		radius :200		// radius  {Number}: 放射的半径,实验证明设10,节点聚一起了,设200,层级的节点间距正好也是200px
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"Radial",
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="Tree布局"></a>Tree布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"Tree",
+	 options:{
+		orientation:100, 	//orientation {String} 定位树的方向,"lefttoright","RightToLeft","toptobottom","bottomtotop"
+		depthSpace:200,		//depthspace {Number} 在树之间的深度层次空间(距离px)
+		breadthSpace:200,   //breadthSpace {Number} 树中的兄弟姐妹之间的空间(距离px)
+		subtreeSpace:200	//subtreeSpace {Number} 不同的子树之间的空间(距离px)
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"Tree",
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="Preset布局"></a>Preset布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"Preset",
+	 options:{
+		fitToScreen :false, //false屏幕左上角为(0,0) true屏幕中央为(0,0),并且节点居中自动适应屏幕.
+		points: [ { id: "1", x:  10, y:  60 },
+				  { id: "2", x: -54, y:  32 },
+				  { id: "3", x: 120, y: -12 } ] 
+		
+		//意思很明确了吧,就是给所有的node设置(x,y),这个地方我吃过亏(好像是x,y坐标设置不上)
+		建议用vis.addElements(elementData,true)来实现预设坐标
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"Preset",
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="CompoundSpringEmbedder布局"></a>CompoundSpringEmbedder布局</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>参数说明:</p>
+<pre>	layout: {
+	 name:"CompoundSpringEmbedder",
+	 options:{
+		layoutQuality: "default", 	//layoutQuality {String}: 绘制的精确度,布局美观度 "default" &lt; "draft" &lt; "proof"
+		//incremental {Boolean}:   true以节点当前位置增量逐步添加设置布局
+		//tension {Number}: 弹簧张力（弹簧常数）
+		//restlength {Number}：默认弹簧静止长度(节点间距)
+		//smartrestlength {Boolean}：大概意思?是否理想计算的节点层级的连线长度
+		//gravitation {Number}: 引力（或排斥，负值）之间的节点力
+		//smartDistance {Boolean}: 如果为真，布尔计算仅当节点对在一定范围内的重力的排斥力，从而导致更快的布局在布局质量相对最小的成本。
+		//centralGravitation {Number}: 所有的节点都被假定是拉略向中心的网络由一个中央的重力（引力常数）在布局。这样做是为了避免网络断开部分的任意分离。
+		//centralGravityDistance {Number}: 该区域在画的中心的半径，其中中央引力不施加
+		//compoundCentralGravitation {Number}: 复合节点中心引力常数。每个复合节点的内容有一个单独的重心。
+		//compoundCentralGravityDistance {Number}: 该地区在复合节点中心的半径，在中央的重力作用。
+		//multiLevelScaling {Boolean}: 如果是真的，多层次的布尔缩放算法应用于更好地捕捉网络的整体结构和节省时间，在大型网络
+		//uniformLeafNodeSizes {Boolean}: 如果为真，布尔叶（非复合的或简单的）节点的尺寸被假定是均匀的，从而导致更快的布局。
+	 }
+   }, 
+   //或者这样简单使用
+   //layout:"CompoundSpringEmbedder",
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

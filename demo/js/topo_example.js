@@ -1,0 +1,33 @@
+$(document).ready(function(){
+
+	/**
+	 *--------------------------------------工具栏--------------------------------------
+	 */
+	//保存
+	$(".menu_save").click(function(){});
+	//导入
+	$(".menu_import").click(function(){});	
+	//导出
+	$(".menu_export").click(function(){});
+	//添加节点
+	$(".menu_add_node").click(function(){
+		$("#menu_add_ialog").dialog();
+	});
+	//修改节点
+	$(".menu_edit_node").click(function(){});
+	//删除节点
+	$(".menu_del_node").click(function(){});
+	//添加连线
+	$(".menu_add_edge").click(function(){});
+	//修改连线
+	$(".menu_edit_edge").click(function(){});
+	//删除连线
+	$(".menu_del_edge").click(function(){});
+	//更换布局
+	$(".menu_layout_select").click(function(){});
+	//修改样式
+	$(".menu_style").click(function(){});
+	//刷新
+	$(".menu_refresh").click(function(){});
+	
+});

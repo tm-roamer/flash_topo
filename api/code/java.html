@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>后台代码概述</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">后台代码概述</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#后台代码概述">后台代码概述</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#Controller示例代码">Controller示例代码</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="后台代码概述"></a>后台代码概述</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>声明: 模板组件的后台代码是公共组件,代码不可以修改.</p>
+<p>\(^o^)/~欢迎大家提出宝贵意见哈</p>
+<p>后台代码地址: /java/main/com/venustech/tsoc/cupid/commons/crud</p>
+<p><img src="../imgs/java1.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="Controller示例代码"></a>Controller示例代码</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>方便大家Copy,贴上TableExampleController的全文代码</p>
+<pre>/**
+ * 通用CRUD页面模板组件---示例
+ */
+@IocBean
+@InjectName
+@At("/example/list")								//前台页面访问指定的路径(最后不要加/)
+@AuthBy(module="demo")								//制定模块权限的名称
+@Fail("error")										//失败处理
+public class TableExampleController extends AbstractTableTemplateController&lt;TableExampleObject&gt; {
+	
+	private static final Bundle bundle = new Bundle("apm");		/** 制定国际化配置文件 */
+	private Logger logger = Logger.getLogger(this.getClass());	/** 记录错误日志 */
+	
+	/**
+	 *  进入JSP页面的入口
+	 */
+	@At("/main")
+	@Ok("jsp:jsp.路径.路径.模块名称")
+	@Log(isEnabled=false)
+	public void viewMain() {
+	}
+	
+//	/**
+//	 *  进入JSP页面的入口--示例dialog
+//	 */
+//	@At("/dialog")
+//	@Ok("jsp:jsp.demo.crud.dialog_table_example")
+//	@Log(isEnabled=false)
+//	public void viewDialog() {
+//	}
+//	
+//	/**
+//	 *  进入JSP页面的入口--示例tab
+//	 */
+//	@At("/tab")
+//	@Ok("jsp:jsp.demo.crud.tab_table_example")
+//	@Log(isEnabled=false)
+//	public void viewTab() {
+//	}
+//	
+//	/**
+//	 *  进入JSP页面--新增iframe--示例tab
+//	 */
+//	@At("/tab/insert")
+//	@Ok("jsp:jsp.demo.crud.tab_insert_table_example")
+//	@Log(isEnabled=false)
+//	public void viewTabInsert() {
+//	}
+//	
+//	/**
+//	 *  进入JSP页面--更新iframe--示例tab
+//	 */
+//	@At("/tab/update")
+//	@Ok("jsp:jsp.demo.crud.tab_update_table_example")
+//	@Log(isEnabled=false)
+//	public void viewTabUpdate() {
+//	}
+	
+	/**
+	 * 加载列表(ajax)
+	 */
+	@At("/list/ajax")
+	@Ok("json")
+	@Log(isEnabled=false)
+	public Pager&lt;TableExampleObject&gt; listAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+								@Param("..") Pager&lt;TableExampleObject&gt; pager/* 与UI的jgGrid控件配合使用才有效 */){
+		return super.listAjax(ioc, request, session, pager,TableExampleObject.class);
+	}
+	
+	/**
+	 * 模糊查询(ajax)
+	 */
+	@At("/search/ajax") 							//访问路径与传统方式的路径区分开
+	@Ok("json") 									//无论成功或是失败，都使用json作为输出
+	@Log(isEnabled=false)
+	public Pager&lt;TableExampleObject&gt; searchListAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+									@Param("..") Pager&lt;TableExampleObject&gt; pager,@Param("search") String search){
+		return super.searchListAjax(ioc, request, session,pager,TableExampleObject.class,search);
+	}
+	
+	/**
+	 * 新增(ajax)
+	 */
+	@At("/insert/ajax") 						//访问路径与传统方式的路径区分开
+	@Ok("json") 								//无论成功或是失败，都使用json作为输出
+	@Fail("json")								//失败处理
+	@Chain("validate")
+	@Validations("validateInsert")				//校验方法
+	@Log(isEnabled=false)
+	public void insertAjax(Ioc ioc,HttpServletRequest request,HttpSession session,
+						@Param("..") TableExampleObject obj){
+		super.insertAjax(ioc, request, session, obj);
+	}
+	
+	/**
+	 * 自定义校验-------新增(参数要和insertAjax方法一致)
+	 */
+	public List&lt;FormValidateEC&gt; validateInsert(Ioc ioc,HttpServletRequest request,HttpSession session, 
+						@Param("..") TableExampleObject obj) {
+		List&lt;FormValidateEC&gt; errors = new ArrayList&lt;FormValidateEC&gt;();
+		boolean repeat = validateTitle(obj,FormCommonUtil.INSERT);
+		if ( repeat ) {
+			FormValidateEC error = new FormValidateEC("validate.repeat",new Bundle("main")).setName("required");
+			errors.add(error);
+		}
+		return errors;
+	}
+	
+	/**
+	 * 更新(ajax)
+	 */
+	@At("/update/ajax") 						//访问路径与传统方式的路径区分开
+	@Ok("json") 								//无论成功或是失败，都使用json作为输出
+	@Chain("validate")
+	@Validations("validateUpdate")				//校验
+	@Fail("json")								//失败处理
+	@Log(isEnabled=false)
+	public void updateAjax(HttpServletRequest request,HttpSession session,
+						@Param("..") TableExampleObject obj){
+		super.updateAjax(request, session, obj);
+	}
+	
+	/**
+	 * 自定义校验-------更新(参数要和updateAjax方法一致)
+	 */
+	public List&lt;FormValidateEC&gt; validateUpdate(HttpServletRequest request,HttpSession session, 
+						@Param("..") TableExampleObject obj) {
+		List&lt;FormValidateEC&gt; errors = new ArrayList&lt;FormValidateEC&gt;();
+		boolean repeat = validateTitle(obj,FormCommonUtil.INSERT);
+		if ( repeat ) {
+			FormValidateEC error = new FormValidateEC("validate.repeat",new Bundle("main")).setName("required");
+			errors.add(error);
+		}
+		return errors;
+	}
+	
+	/**
+	 * 查询单条(ajax)
+	 */
+	@At("/detail/ajax") 							//访问路径与传统方式的路径区分开
+	@Ok("json") 									//无论成功或是失败，都使用json作为输出
+	@Log(isEnabled=false)
+	public TableExampleObject readAjax(Ioc ioc,HttpServletRequest request,HttpSession session,@Param("id") long id){
+		return super.readAjax(ioc, request, session, id);
+	}
+
+	/**
+	 * 删除(ajax)
+	 */
+	@At("/delete/ajax") 							//访问路径与传统方式的路径区分开
+	@Ok("json") 									//无论成功或是失败，都使用json作为输出
+	@Log(isEnabled=false)
+	public void deleteAjax(Ioc ioc,HttpServletRequest request,HttpSession session,@Param("ids") long[] ids){
+		super.deleteAjax(ioc, request, session, ids);
+	}
+}
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

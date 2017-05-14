@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>样式设置(包含映射)</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">样式设置(包含映射)</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#样式设置(visualStyle)">样式设置(visualStyle)</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#全局变量控制样式换肤">全局变量控制样式换肤</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#常用映射说明:">常用映射说明:</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="样式设置(visualStyle)"></a>样式设置(visualStyle)</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>复习上一节的全局设置中样式设置:</p>
+<pre>	//---------------------------------配置绘画---------------------------------------------//
+	var draw_options = {
+	   ...
+	   visualStyle: visual_style,	//设置样式(下面小节,详细讲解)
+	   ...
+	};
+	//---------------------------------开始绘画---------------------------------------------//
+	//第一次绘制加载样式和配置
+	vis.draw(draw_options);
+</pre>
+<p>现将示例代码粘贴如下:(可以参考官网写法,其实用哪里写哪里就行)如何遇到skin开头的全局变量或者passthroughMapper映射请不要疑惑,我们将在下一小节讲解</p>
+<pre>	//---------------------------------初始化flex图形的样式---------------------------------------------//
+	//设置样式
+	var visual_style = {
+		   global: {
+				  backgroundColor: skinBackgroundColor,	//背景颜色,默认#ffffff白色,
+				  tooltipDelay: 400,			//光标在node和dege的tooltip的反应延时,默认800
+				  selectionFillColor: "#8888ff",		//选区矩形的颜色,默认#8888ff
+				  selectionLineColor: "#8888ff",		//选区矩形边框的颜色,默认#8888ff
+				  selectionFillOpacity:0.1,	//选区矩形的透明度,默认0.1
+				  selectionLineOpacity:0.8,	//选区矩形边框的透明度,默认0.8
+				  selectionLineWidth:1		//选区矩形边框的宽度,默认1
+		   },
+		   nodes: {
+				shape: { passthroughMapper: { attrName: "shape" } },//"ELLIPSE",	//节点形状,椭圆ELLIPSE/矩形RECTANGLE/三角形TRIANGLE/钻石DIAMOND/六角HEXAGON/八角OCTAGON/平行四边形PARALLELOGRAM/绘制的ROUNDRECT/v字形VEE
+				size: { passthroughMapper: { attrName: "weight" } }, //节点大小,可以自动设置,默认24
+				//color:{ passthroughMapper: { attrName: "color" } },  //节点颜色,默认#f5f5f5
+				opacity:1,		//节点的透明度,默认0.8
+				//width://节点的宽度,以像素为单位
+				//height://节点的高度,以像素为单位
+				//image:"${base}/images/aaaa.gif", //图像的URL作为节点的背景
+				image: { passthroughMapper: { attrName: "imgtype" } },//{ discreteMapper:{attrName: "imgtype",entries: nodeImages } },
+				borderColor:{ passthroughMapper: { attrName: "color" } },//节点边框颜色,默认值#666666
+				borderWidth:1,//节点边框的宽度,默认值1
+				selectionColor: { passthroughMapper: { attrName: "color" } },//"#f5f5f5",//节点选中的颜色,默认等于color
+				selectionBorderColor:skinNodeGlowColor,//节点选中的边框颜色,默认等于bordercolor 666666
+				selectionOpacity:1,		//节点选中的透明度,默认等于opacity
+				selectionBorderWidth:0,	//节点选中的边框宽度,默认等于borderWidth
+				selectionGlowColor: skinNodeGlowColor,//"#ffff33",//节点选中的发光颜色,默认#ffff33
+				selectionGlowOpacity:0.9,	//节点选中的发光透明度,默认0.6
+				selectionGlowBlur:8,		//节点选中的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				selectionGlowStrength:3,	//节点选中的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+				hoverOpacity:1,	//节点悬停的透明度,默认等于opacity
+				hoverBorderColor:skinNodeGlowColor,//节点悬停的边框颜色,默认等于bordercolor 666666
+				hoverBorderWidth:0,//节点悬停的边框宽度,默认等于borderWidth
+				hoverGlowColor: skinNodeGlowColor,//{ passthroughMapper: { attrName: "color" } },//"#aae6ff",//节点悬停的发光颜色,默认“#aae6ff”
+				hoverGlowOpacity:0.9,	//节点悬停的透明度,默认0
+				hoverGlowBlur:8,	//节点悬停的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				hoverGlowStrength:3,//节点悬停的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+				//label: { passthroughMapper: { attrName: "label" } } ,//节点显示文字,可以映射节点数据的字段,自动默认映射label字段
+				labelfontname:"Arial",//节点显示标签的字体,默认Arial
+				labelfontsize:11,//节点显示标签的字体大小,默认11
+				labelFontColor:skinLabelColor,//节点显示标签的字体颜色,默认#000000黑色
+				labelFontWeight:"normal",//节点显示标签的字体粗细,默认normal,支持bold(加粗)
+				labelFontStyle:"normal",//节点显示标签的字体样式,默认normal,支持italic(斜体)
+				labelHorizontalAnchor:"center",//节点显示标签的水平显示位置,默认center,支持left,right
+				labelVerticalAnchor:"bottom",	//节点显示标签的垂直的显示位置,默认middle,支持top,bottom
+				labelXOffset:0, //节点显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+				labelYOffset:0, //节点显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+				labelGlowColor:"#ffffff", //节点显示标签的发光颜色,默认#ffffff
+				labelGlowOpacity:0,	//节点显示标签的发光透明度,默认0
+				labelGlowBlur:8,	//节点显示标签的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				labelGlowStrength:20,//节点显示标签的发光对比度,有效值0-255,默认值20,对滤镜和渐变理解不深的不建议修改
+				tooltipText:{ passthroughMapper: { attrName: "tooltip" } },//"&lt;b&gt;${label}&lt;/b&gt;: ${weight}",//节点的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+				tooltipFont:"Arial", //节点提示文字的字体,默认Arial
+				tooltipFontSize:11,//节点提示文字的字体大小,默认11
+				tooltipFontColor:"#ffffff",//线的提示文字的文字颜色,默认#000000
+				tooltipBackgroundColor:"#505050",//线的提示文字的背景颜色,默认#f5f5cc
+				tooltipBorderColor:"#505050",//线的提示文字的边框颜色,默认#000000
+				//
+				//节点组(复合节点)的样式,参考上面节点的样式,是一样的,只不过字段前面加了compound而已
+				//
+				compoundShape: "RECTANGLE",//节点组形状,只接受椭圆ELLIPSE/矩形RECTANGLE/绘制的ROUNDRECT
+				//compoundSize:"auto",//auto(默认),ignoreLabels,//节点组的尺寸,一般自动,不需要设置.
+				compoundColor: skinCompoundColor,//"#252525", //节点组颜色,默认#f5f5f5
+				compoundOpacity:0.8,		//节点组的透明度,默认0.8
+				//compoundWidth:400,//节点组的宽度,以像素为单位,不支持
+				//compoundHeight:150,//节点组的高度,以像素为单位,不支持
+				//compoundImage://图像的URL作为节点组的背景
+				compoundBorderColor:{ passthroughMapper: { attrName: "color" } },//"#20b6e4",//节点组边框颜色,默认值#666666
+				compoundBorderWidth:1,//节点组边框的宽度,默认值1
+				compoundSelectionBorderColor:"#20b6e4",//节点组选中的边框颜色,默认等于bordercolor
+				compoundSelectionBorderWidth:0,	//节点组选中的边框宽度,默认等于borderWidth
+				compoundSelectionColor:{ passthroughMapper: { attrName: "compoundColor" } }, //"#f5f5f5",//节点组选中的颜色,默认等于color
+				compoundSelectionOpacity:0.8,		//节点组选中的透明度,默认等于opacity
+				compoundSelectionGlowColor: { passthroughMapper: { attrName: "compoundColor" } }, //"#ffff33",	//节点组选中的发光颜色,默认#ffff33
+				compoundSelectionGlowOpacity:0.5,	//节点组选中的发光透明度,默认0.6
+				compoundSelectionGlowBlur:8,		//节点组选中的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				compoundSelectionGlowStrength:3,	//节点组选中的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+				compoundHoverBorderColor:"#20b6e4",//节点组悬停的边框颜色,默认等于bordercolor
+				compoundHoverBorderWidth:0,//节点组悬停的边框宽度,默认等于borderWidth
+				compoundHoverColor:"#20b6e4",
+				compoundHoverOpacity:0.8,	//节点组悬停的透明度,默认等于opacity
+				compoundHoverGlowColor:{ passthroughMapper: { attrName: "compoundColor" } }, //节点组悬停的发光颜色,默认“#aae6ff”
+				compoundHoverGlowOpacity:0.5,	//节点组悬停的透明度,默认0
+				compoundHoverGlowBlur:8,	//节点组悬停的发光模糊效果,默认8,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				compoundHoverGlowStrength:3,//节点组悬停的发光对比度,有效值0-255,默认值6,对滤镜和渐变理解不深的不建议修改
+				//compoundLabel: { passthroughMapper: { attrName: "label" } } ,//节点组显示文字,可以映射节点数据的字段,自动默认映射label字段
+				compoundLabelfontname:"Arial",//节点组显示标签的字体,默认Arial
+				compoundLabelfontsize:11,//节点组显示标签的字体大小,默认11
+				compoundLabelFontColor:skinLabelColor,//节点组显示标签的字体颜色,默认#000000黑色
+				compoundLabelFontWeight:"normal",//节点组显示标签的字体粗细,默认normal,支持bold(加粗)
+				compoundLabelFontStyle:"normal",//节点组显示标签的字体样式,默认normal,支持italic(斜体)
+				compoundLabelHorizontalAnchor:"center",//节点组显示标签的水平显示位置,默认center,支持left,right
+				compoundLabelVerticalAnchor:"bottom",	//节点组显示标签的垂直的显示位置,默认middle,支持top,bottom
+				compoundLabelXOffset:0, //节点组显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+				compoundLabelYOffset:0, //节点组显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+				compoundLabelGlowColor:skinLabelColor, //节点组显示标签的发光颜色,默认#ffffff
+				compoundLabelGlowOpacity:0,	//节点组显示标签的发光透明度,默认0
+				compoundLabelGlowBlur:2,	//节点组显示标签的发光模糊效果,默认2,有效值0-255,最好8的倍数,例如2、4、8、16、32
+				compoundLabelGlowStrength:20,//节点组显示标签的发光对比度,有效值0-255,默认值20,对滤镜和渐变理解不深的不建议修改
+				//compoundTooltipText:{ passthroughMapper: { attrName: "tooltip" } },//"&lt;b&gt;${label}&lt;/b&gt;: ${weight}",//节点组的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+				compoundTtooltipFont:"Arial", //节点组提示文字的字体,默认Arial
+				compoundTooltipFontSize:11,//节点组提示文字的字体大小,默认11
+				compoundTooltipFontColor:"#ffffff",//节点组提示文字的字体颜色,默认#000000黑色
+				compoundTooltipBackgroundColor:"#505050",//节点组提示文字的背景颜色,默认#f5f5cc
+				compoundTooltipBorderColor:"#505050"//节点组提示文字的边框,默认#000000黑色
+		 },
+		 edges:{
+			  style:"SOLID",	//线的样式,"SOLID(实心)/DOT(点)/LONG_DASH长破折号/EQUAL_DASH短破折号. 默认"SOLID"
+			  color: { passthroughMapper: { attrName: "color" } },	//线的颜色,默认#999999
+			  width: { passthroughMapper: { attrName: "weight" } },	//线的宽度,默认1px
+			  opacity: 0.5, 	//线的透明度,默认0.8
+			  
+			  // mergeColor:"#666666",	//合并线的颜色,默认#999999
+			  // mergeWidth: 1,		//合并线的宽度,默认1px
+			  // mergeOpacity: 0.8, 	//合并线的透明度,默认0.8
+			  // mergeStyle:"SOLID",	//合并线的样式,"SOLID(实心)/DOT(点)/LONG_DASH长破折号/EQUAL_DASH短破折号. 默认"SOLID"
+			  // mergeTooltipText:"&lt;b&gt;${label}&lt;/b&gt;",//合并线的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+			  
+			   selectionColor:{ passthroughMapper: { attrName: "color" } }, //"#999999",//线选中的颜色,默认color,或者mergeColor
+			   selectionOpacity:1, //线选中的透明度,默认opacity,或者mergeOpacity
+			   selectionGlowColor:  { passthroughMapper: { attrName: "color" } }, //"#ffff33",//线选中发光的颜色,默认#ffff33
+			   selectionGlowOpacity:0.5,//线选中发光的透明度,默认0.6
+			   selectionGlowBlur:4,//线选中发光的模糊效果,默认4,有效值0-255,最好8的倍数,例如2、4、8、16、32
+			   selectionGlowStrength:3,//线选中发光的对比度,有效值0-255,默认值10,对滤镜和渐变理解不深的不建议修改
+			   hoverOpacity:1,//悬停的透明度
+			   curvature:18,	//线的曲率,线的弧形弯曲角度,默认18
+			   sourceArrowShape:"none", //线起点的样式,NONE没有/DELTA三角洲/ARROW箭头/DIAMOND钻石/CIRCLE圆/T(T型)
+			   targetArrowShape:"delta",//"delta",//线终点的样式,线数据没有配置,默认none,线数据设置directed,默认delta
+			   //sourceArrowColor:"#999999", //线起点颜色,默认color
+			   //targetArrowColor:"#179fdc", //"#999999", //线终点颜色,默认color
+			   label: { passthroughMapper: { attrName: "label" } }, //线显示文字,可以映射节点数据的字段,自动默认映射label字段
+			   labelHorizontalAnchor: "center", //线显示标签的水平显示位置,默认center,支持left,right
+			   labelVerticalAnchor: "middle", //线显示标签的垂直的显示位置,默认middle,支持top,bottom
+			   labelXOffset: 0, //线显示标签的X轴的偏移量,类似于padding,配合labelHorizontalAnchor使用,可以用负整数
+			   labelYOffset: 0, //线显示标签的Y轴的偏移量,类似于padding,配合labelVerticalAnchor使用,可以用负整数
+			   labelFontName: "Arial", //线显示标签的字体,默认Arial
+			   labelFontSize:11, //线显示标签的字体大小,默认11
+			   labelFontColor: skinLabelColor, //线显示标签的字体颜色,默认#000000黑色
+			   labelFontWeight: "normal", //线显示标签的字体粗细,默认normal,支持bold(加粗)
+			   labelFontStyle: "normal",  //线显示标签的字体样式,默认normal,支持italic(斜体)
+			   labelGlowColor:skinLabelColor, //线显示标签的发光颜色,默认#fffff白色
+			   labelGlowOpacity:0,//线显示标签的发光透明度,默认#fffff白色
+			   labelGlowBlur:2, //线显示标签的发光模糊效果,默认2,有效值0-255,最好8的倍数,例如2、4、8、16、32
+			   labelGlowStrength:20,//线显示标签的发光对比度,有效值0-255,默认值10,对滤镜和渐变理解不深的不建议修改
+			   tooltipText: { passthroughMapper: { attrName: "tooltip" } },//线的提示文字,默认显示,绑定节点数据的字段,可以是html代码
+			   tooltipFont: "Arial",//线的提示文字的文字字体,默认Arial
+			   tooltipFontSize: 11,//线的提示文字的文字大小,默认11px
+			   tooltipFontColor:"#ffffff",//线的提示文字的文字颜色,默认#000000
+			   tooltipBackgroundColor:"#505050",//线的提示文字的背景颜色,默认#f5f5cc
+			   tooltipBorderColor:"#505050"//线的提示文字的边框颜色,默认#000000
+		 }
+	};
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="全局变量控制样式换肤"></a>全局变量控制样式换肤</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p></p>
+<pre>	//设置全局变量
+	var skinBackgroundColor = "#252525";  //动态修改拓扑图样式示例
+	var skinEdgeColor = "#c1c1c1";		  //线的颜色
+	var skinNodeGlowColor = "#ffffff";	  //节点发光颜色
+	var skinLabelColor = "#ffffff";		  //label标签颜色
+	
+	//页面初始化时, 换肤的伪代码
+	if( 皮肤 == 黑色 ){
+		skinBackgroundColor = 颜色;
+		skinEdgeColor = 颜色;
+		skinNodeGlowColor = 颜色;
+		skinLabelColor = 颜色;
+	}else if( 皮肤 == 其他颜色 ){...}
+		
+	//复习上一节的全局变量的使用
+	var visual_style = {
+		   global: {
+				backgroundColor: skinBackgroundColor,	//背景颜色,默认#ffffff白色,
+			}
+		}
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="常用映射说明:"></a>常用映射说明:</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>cytoscapeWeb将是数据和样式分离的,非常棒.但是有时候我们组装数据需要将数据和样式捆绑在一起.这个时候就用到了映射.</p>
+<p>passthroughMapper映射:将节点形状的样式绑定到数据node节点的shape自定义字段(参考上一小节的draw_options.network,dataSchema)</p>
+<pre>	var visual_style = {
+	   global: {
+			...
+	   },
+	   nodes: {
+			
+			shape: { passthroughMapper: { attrName: "shape" } },
+	   }
+	}
+</pre>
+<p>CustomMapper映射:自定义映射,主要应用于tooltip格式化</p>
+<pre>	//自定义js函数
+	vis["customTooltip"] = function (data /*节点数据*/) {
+		var value = Math.round(100 * data["weight"]) + "%";
+		//返回格式化后的Tooltip
+		return 'The confidence level of this link is: ' +
+			   '&lt;font color="#000099" face="Courier" size="14"&gt;' + value + '&lt;/font&gt;';
+	};
+	//取得样式
+	var style = vis.visualStyle();
+	//设置样式,绑定映射
+	style.edges.tooltipText = { customMapper: { functionName: "customTooltip" } },
+	//绘制样式
+	vis.visualStyle(style);
+</pre>
+<p>DiscreteMapper映射:从一组样式中选择其中一个.例:</p>
+<pre>	//---------------------------------初始化拓扑图的节点图片-----------------------------------------//
+	var nodeImages = [  { attrValue: "node1",value: "img/node1.png"},
+						{ attrValue: "node2",value: "img/node2.png"},
+						{ attrValue: "node3",value: "img/node3.png"},
+						{ attrValue: "node4",value: "img/node4.png"},
+						{ attrValue: "node5",value: "img/node5.png"}
+	var visual_style = {
+	   global: {
+			...
+	   },
+	   nodes: {
+			//attrName绑定数据的自定义字段,entries绑定数组
+			image: { discreteMapper:{attrName: "imgtype",entries: nodeImages } },
+	   }
+	}
+	
+	//---------------------------------初始化拓扑图的数据---------------------------------------------//
+	//这样我们就可以用下面的imgtype来绑定图片了
+	var network_json = {
+		dataSchema: {
+			 nodes: [ { name:"imgtype",...} ]
+		},
+		data: {
+			nodes: [ {imgtype:"node1" ....}],
+		}
+	};
+</pre>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

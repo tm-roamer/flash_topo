@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>第四步创建JSP页面</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">第四步创建JSP页面</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#新建一个JSP页面">新建一个JSP页面</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#熟悉c_t_config对象">熟悉c_t_config对象</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#配置URL">配置URL</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#配置jqGrid表格">配置jqGrid表格</a></div>
+</li>
+<li>
+<div><span class="num">5</span><a href="#配置弹出框页面">配置弹出框页面</a></div>
+</li>
+<li>
+<div><span class="num">6</span><a href="#模糊查询">模糊查询</a></div>
+</li>
+<li>
+<div><span class="num">7</span><a href="#新增">新增</a></div>
+</li>
+<li>
+<div><span class="num">8</span><a href="#更新">更新</a></div>
+</li>
+<li>
+<div><span class="num">9</span><a href="#查询单条详细">查询单条详细</a></div>
+</li>
+<li>
+<div><span class="num">10</span><a href="#删除">删除</a></div>
+</li>
+<li>
+<div><span class="num">11</span><a href="#前台验证">前台验证</a></div>
+</li>
+<li>
+<div><span class="num">12</span><a href="#自定义">自定义</a></div>
+</li>
+<li>
+<div><span class="num">13</span><a href="#小结">小结</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="新建一个JSP页面"></a>新建一个JSP页面</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>由于本模板组件JSP页面实现有2个版本dialog版和tab版,故名思意就是新增,更新时是弹出dialog还是tab页.</p>
+<p>所以当我们在/指定目录下创建JSP页面时,先根据需求或详设文档想好页面的如何实现,是否复杂,是tab实现还是dialog实现.</p>
+<p>还记得 3.2第二步创建controller类的构建JSP页面入口那一章节吗? </p>
+<ul type="disc">
+<li>那个地址还是示例代码的地址呦,现在可以替换成当前JSP地址了.</li>
+<li>我们假定用dialog去实现,ctrl + a 将dialog_table_example.jsp所有代码粘贴到当前的JSP页面内.</li>
+<li>然后跑一下页面,页面正常显示那我们新建的JSP页面第一步就算完成了.</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="熟悉c_t_config对象"></a>熟悉c_t_config对象</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在我们继续往下进行时,有必要先了解一下c_t_config对象,c_t_config对象就一个用途,规范书写格式.</p>
+<p>它统一配置页面初始方法,变量名,请求url,国际化字符,前台验证,执行函数,	</p>
+<p>如图,是不是看着很清爽呢<img src="../imgs/page3.png"/></p>
+<div class="hr"><b></b></div>
+<h1><a name="配置URL"></a>配置URL</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>ok,我们继续,开始配置URL请求,修改完先不要跑页面,紧接着要修改jqGrid表格的colModel,请看下一小节</p>
+<p>红色框选中的为修改内容,其它地方不要修改<img src="../imgs/page1.png"/></p>
+<p>示例代码如下:</p>
+<pre>url:{
+	select:"${base}/example/list/list/ajax",		&lt;%-- 表格加载链接 --%&gt;
+	search:"${base}/example/list/search/ajax",		&lt;%-- 表格查询链接 --%&gt;
+	insert:"${base}/example/list/insert/ajax",		&lt;%-- 表格新增提交链接 --%&gt;
+	update:"${base}/example/list/update/ajax",		&lt;%-- 表格更新提交链接 --%&gt;
+	detail:"${base}/example/list/detail/ajax",		&lt;%-- 查询单条详细,和更新初始页面链接 --%&gt;
+	del:"${base}/example/list/delete/ajax"			&lt;%-- 删除(单选/多选)提交链接 --%&gt;
+},
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="配置jqGrid表格"></a>配置jqGrid表格</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在init_jqgrid()方法中就是初始jqGrid的方法了,只修改jqGrid表格的colModel,其他配置都是默认的不需要修改,</p>
+<p>配置完成后,我们可以跑一下页面了.</p>
+<p>技巧补充: ie8对json格式的最后一个字段的逗号非常敏感会报错, 大家书写的时候注意检查噢.</p>
+<p>红色框选中的为修改内容<img src="../imgs/page2.png"/></p>
+<p>示例代码如下:</p>
+<pre>colModel:[
+	&lt;%-- 
+		********************************************** 具体配置列位置 ***************************************开始
+		注意: 格式化jqGrid单元格参考以下语法
+				formatter:function(cellvalue,options,rowObject){}
+				formatter:"dictable", formatoptions:{}
+	--%&gt;
+	//必填
+	{name: "required",	label:c_t_config.msg.col_required,	sortable:false,	align:'center',	width:150,
+		formatter:function(cellvalue,options,rowObject){ 	//给ID字段加入链接,view函数
+			return "&lt;a class='clear' href='javascript://' id='a_"+rowObject.id+"'"+
+						"onclick='c_t_jqqrid_detail("+rowObject.id+")'&gt;"+cellvalue+"&lt;/a&gt;";
+		}
+	},	
+	//邮箱
+	{name: "email",		label:c_t_config.msg.col_email,		sortable:false,	align:'center',	width:100},	
+	//数字
+	{name: "number",	label:c_t_config.msg.col_number,	sortable:false,	align:'center',	width:100},
+	//端口
+	{name: "port",		label:c_t_config.msg.col_port,		sortable:false,	align:'center',	width:100},
+	&lt;%--
+		********************************************** 具体配置列位置 ***************************************结束
+	--%&gt;
+	//编辑---hidden字段控制是否显示
+	{name: "id",		label:c_t_config.msg.btn_update,	sortable:false,	align:'center',width:50,
+				fixed:true,hidden:false,width:50,formatter:jqgrid_update_cell},
+	//删除---hidden字段控制是否显示
+	{name: "id",		label:c_t_config.msg.btn_delete,	sortable:false,	align:'center',width:50,
+				fixed:true,hidden:false,formatter:jqgrid_delete_cell}
+	],
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="配置弹出框页面"></a>配置弹出框页面</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>制作完jqGrid, 那我们可以开始忙活弹出框了, 我们先去配置<img src="body"/><img src="div id=c_t_none_div"/>的<img src="ul"/>,这div里个<img src="ul"/>标签就是我们dialog的form表单</p>
+<p>模板组件在页面初始时自动将<img src="ul"/>添加到dialog中</p>
+<p><img src="ul"/>支持多个,里面的c_t_type字段是控制这个是新增还是更新</p>
+<p>红色框选中的为修改内容<img src="../imgs/page6.png"/></p>
+<p>示例代码如下:</p>
+<pre>&lt;%--
+	下面的div是书写dialog的位置,样式是display:none,不影响页面,
+	
+		原理: 模版文件已经包含dialog基础代码,只需要将下面的ul插入指定的fieldset里,即可完成dialog的初始化操作
+			  &lt;ul&gt;有个字段c_t_type,控制&lt;ul&gt;属于哪个dialog,c_t_type="insert|update",也可以分开.
+			     大家只将需要构建&lt;li&gt;就可以了.
+		注意: c_t_type 字段不可修改,必填项.大家只关注&lt;li&gt;即可,其他的地方不建议修改.
+		例:
+			当ul只当新增时使用c_t_type="insert"
+			当ul只当更新时使用c_t_type="update"
+			当ul只当新增/更新时使用c_t_type="insert|update"
+--%&gt;
+&lt;div id="c_t_none_div" style="display:none;"&gt;
+	&lt;ul c_t_type="insert|update" class="three-column"&gt;
+		&lt;input type="hidden" name="id" /&gt;
+		&lt;li class="clearfix"&gt;
+   			&lt;label&gt;required&lt;em&gt;*&lt;/em&gt;&lt;/label&gt;&lt;!--描述 --&gt;
+   			&lt;div&gt;&lt;input type="text" name="required" /&gt;&amp;nbsp;&lt;/div&gt;&lt;!--form元素 --&gt;
+   			&lt;span&gt;&lt;/span&gt;&lt;!--验证说明 --&gt;
+   		&lt;/li&gt;
+   		&lt;li class="clearfix"&gt;
+   			&lt;label&gt;requiredIfChecked&lt;em&gt;&lt;/em&gt;&lt;/label&gt;
+   			&lt;div&gt;&lt;input type="checkbox" name="requiredIfChecked"/&gt;&amp;nbsp;&lt;/div&gt;
+   			&lt;span&gt;&lt;/span&gt;
+   		&lt;/li&gt;
+   		&lt;li class="clearfix"&gt;
+   			&lt;label&gt;minlength&lt;em&gt;&lt;/em&gt;&lt;/label&gt;
+   			&lt;div&gt;&lt;input type="text" name="minlength" /&gt;&amp;nbsp;&lt;/div&gt;
+   			&lt;span&gt;&lt;/span&gt;
+   		&lt;/li&gt;
+   	&lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="模糊查询"></a>模糊查询</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.fun.search方法中配置,可以很高兴的告诉大家,这个方法不需要修改,直接使用,去copy示例代码吧</p>
+<div class="hr"><b></b></div>
+<h1><a name="新增"></a>新增</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.fun.insert_pre和c_t_config.fun.insert中配置,</p>
+<p>insert_pre是点击新增按钮时触发,初始一些参数之类的,默认空实现</p>
+<p>insert是点击新增提交时触发,示例代码中已经有标准实现,这个方法不需要修改,可以直接使用,去copy示例代码吧</p>
+<div class="hr"><b></b></div>
+<h1><a name="更新"></a>更新</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.fun.update_pre和c_t_config.fun.update中配置,</p>
+<p>update_pre是点击编辑按钮时触发,初始表单参数</p>
+<p>图例:<img src="../imgs/page5.png"/></p>
+<p>示例代码如下:</p>
+<pre>&lt;%--  
+	点击更新按钮时触发
+		给你更新对话框的form_id和那条记录的ID,有啥想初始表单的就在这里整吧
+--%&gt;
+update_pre:function(id/*主键*/,form_id/*formID*/){				//回调位置在初始化dialog或者tab之后
+	//从后台取得数据
+	$.ajax({
+	   url: c_t_config.url.detail,	//请求地址
+	   type: "POST",	//请求类型
+	   async:"true",	//异步请求
+	   dataType:"json",	//返回json
+	   data:{id:id},//携带数据
+	   success: function(obj){
+			//if( obj.is_on == 1 ){
+			//	$(form_id+" input[name=is_on]").attr("checked","checked");
+			//}
+			$(form_id+" input[name=id]").val(obj.id);
+			$(form_id+" input[name=required]").val(obj.required);
+			$(form_id+" input[name=email]").val(obj.email);
+			$(form_id+" input[name=number]").val(obj.number);
+			$(form_id+" input[name=port]").val(obj.port);
+			$(form_id+" input[name=datetime]").val(obj.datetime);
+	   }
+	});
+	//动态设置表单
+},
+</pre>
+<p>update是点击编辑提交时触发,示例代码中已经有标准实现,这个方法不需要修改,可以直接使用,去copy示例代码吧</p>
+<div class="hr"><b></b></div>
+<h1><a name="查询单条详细"></a>查询单条详细</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.fun.detail方法中配置,使用的js插件地址: /web/js/traffic/utils/detail.paging.plug.js</p>
+<p>红色框选中的为修改内容,其它地方不要修改<img src="../imgs/page4.png"/></p>
+<p>示例代码如下:</p>
+<pre>&lt;%--
+	弹出单条记录详细
+		需配置jqgrid使用:
+			formatter:function(cellvalue,options,rowObject){ 	//给ID字段加入链接,view函数
+				return "&lt;a class='clear' href='javascript://' id='a_"+rowObject.id+"'"+
+							"onclick='c_t_jqqrid_detail("+rowObject.id+")'&gt;"+cellvalue+"&lt;/a&gt;";
+			}
+		c_t_jqqrid_detail为弹出详细的函数
+		
+		弹出单条记录详细的Dialog
+		配置字段解释:
+			field 			字段名,jqgrid咋写,这里咋写
+			nameI18n		国际化文字,c_t_config.msg中配置吧
+			sort			显示位置,从0开始计数,不能重复,不能不连续.
+			formatoptions	格式化回调方法一,擅长"yes":是,"no":否
+							formatoptions:{
+								"0":c_t_config.msg.is_on_no,//未启用
+								"1":c_t_config.msg.is_on_yes,//启用
+							}
+			formatter		格式化回调方法二,擅长想怎么玩都行.
+							formatter: function(cellvalue/*field指定 的值*/){
+								return "格式化的返回值"
+							}
+			
+		如何修改dialog样式??????
+		$(c_t_dialog_detail).find("#dia_div").css({"overflow-x":"hidden","overflow-y":"auto","max-height":"300px"});
+--%&gt;
+detail:function(){
+	return [
+		  {field:'required',nameI18n:c_t_config.msg.col_required,sort:0},
+		  {field:'email',nameI18n:c_t_config.msg.col_email,sort:1},
+		  {field:'number',nameI18n:c_t_config.msg.col_number,sort:2},
+		  {field:'port',nameI18n:c_t_config.msg.col_port,sort:3}
+	];
+},
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="删除"></a>删除</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.fun.del方法中配置,可以很高兴的告诉大家,这个方法不需要修改,直接使用,去copy示例代码吧</p>
+<div class="hr"><b></b></div>
+<h1><a name="前台验证"></a>前台验证</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>在c_t_config.validate方法中配置,</p>
+<p>红色框选中的为修改内容,其它地方不要修改<img src="../imgs/page7.png"/></p>
+<p>示例代码如下:</p>
+<pre>validate:function(type/*类别*/,form/*表单对象*/){
+			if( type == "insert" || type == "update" ){
+				form.validate({
+					&lt;%-- 
+						参考:	com.venustech.tsoc.cupid.demo.ValidateHelloWorld 范例Controller
+						    	com.venustech.tsoc.cupid.demo.ValidateObject 被验证的POJO对象
+						    	web/WEB-INF/core/demo/validate.jsp 表单页面
+					--%&gt;
+					rules: {
+						'required':{required:true,rangelength:[3,5]},
+						'datetime':{required:true}
+					},
+					messages:{
+						'required':{'rangelength':"长度3-5位"}
+					}
+				});
+			}
+			return form;
+		},
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="自定义"></a>自定义</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>$(document).ready(function()); 看见这个方法,大家有没有一种看见亲人的感觉呢,CUPID前台是基于js的,所以给了我们前台页面无限的灵活性.</p>
+<p>例: 去查看table_js_template.jsp,页面所有的id都有定义.不喜欢模糊查询.hide()隐藏,.remove()移除,.css()换个位置等等.加个按钮,.append(),.html(),live(click,function());</p>
+<p>红色框选中的为修改内容,其它地方不要修改<img src="../imgs/page8.png"/></p>
+<p>示例代码如下:</p>
+<pre>&lt;%-- 
+	如果模版页面样式满足不了,可以通过自定义样式,或者通过js脚本来控制.
+	例: 隐藏新增和多选删除按钮?
+		根据c_t_config的配置,
+		知道/新增id--c_t_btn_add/多选删除id--c_t_btn_delete_all
+		$("#c_t_btn_add").hide() or .show(); 即可.
+	
+--%&gt;
+$(document).ready(function(){});
+</pre>
+<div class="hr"><b></b></div>
+<h1><a name="小结"></a>小结</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>恭喜你,你已经完成了表格增删改查的搭建,计算一下用时是不是效率提高了</p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>

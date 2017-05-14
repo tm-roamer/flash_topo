@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>数据设置</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">数据设置</div>
+<div class="zdoc_author"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#数据的全局配置(network)---JSON格式">数据的全局配置(network)---JSON格式</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#数据的全局配置(network)---XML格式(graphml)">数据的全局配置(network)---XML格式(.graphml)</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="数据的全局配置(network)---JSON格式"></a>数据的全局配置(network)---JSON格式</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>JSON格式:</p>
+<pre>	//---------------------------------初始化拓扑图的数据---------------------------------------------//
+	var network_json = {
+			//配置自定义预设字段
+			dataSchema: {
+			//name字段名,type数据类型(string/boolean/number/int/object),defValue默认值
+				 nodes: [ { name:"label", type:"string", defValue:"" }, 		//显示标签
+						  { name:"shape", type:"string", defValue:"RECTANGLE" },//节点形状,椭圆ELLIPSE/矩形RECTANGLE/钻石DIAMOND/六角HEXAGON/
+						  { name:"weight", type:"int", defValue:48 },			//节点尺寸,默认20px
+						//  { name:"color",  type:"string", defValue:"#20b8df" },	//节点颜色,如果节点是图片,那颜色无效
+						  { name:"imgtype",type:"string"},						//节点图片,配合discreteMapper使用
+						  { name:"tooltip",  type:"string", defValue:"" },		//节点悬停提示
+						  { name:"x",  type:"int" },					//仅当布局为Preset(预设坐标)时有效,并配合vis.addElements()使用
+						  { name:"y",  type:"int" } ],					//仅当布局为Preset(预设坐标)时有效,并配合vis.addElements()使用
+				 edges: [ { name:"label",  type:"string", defValue:"" },			//显示标签
+						  { name:"weight", type:"int", defValue:1 },				//尺寸,默认1px
+						  { name:"color",  type:"string", defValue:skinEdgeColor }, //颜色
+						  { name:"tooltip",  type:"string", defValue:"" } ]	 		//悬停提示
+			},
+			//上面配置完了,下面就是写数据了,也可以ajax方法加载,下面提供示例了,
+			//特别注意,如果使用Preset布局,自己控制x,y坐标的时候,使用vis.addElements()更方便,吃过亏,小经验传授一下
+			data: {
+				nodes: [
+					{id:"a01",label:"A01",imgtype:"node1"}, //上面配默认值数据这可以不配的,id值必须必须唯一!!!!!!!!!!!!!!!!!!!!!!!!!!
+					{id:"a02",label:"A02",imgtype:"node2"},
+					{id:"a03",label:"A03",imgtype:"node3"},
+					{id:"a04",label:"A04",imgtype:"node4"},
+					{id:"a05",label:"A05",imgtype:"node5"}
+				],
+				edges: [
+					{target:"a01",source:"a02",weight:2,label:"a01 (15) a02"},
+					{target:"a02",source:"a03",weight:3,label:"a02 (15) a03"},
+					{target:"a03",source:"a04",weight:4,label:"a03 (15) a04"},
+					{target:"a04",source:"a05",weight:5,label:"a04 (15) a05"},
+					{target:"a01",source:"a03",weight:6,label:"a01 (15) a03"},
+					{target:"a03",source:"a05",weight:7,label:"a03 (15) a05"}
+				]
+			}
+	};
+	
+	//示例ajax请求
+	/*页面第一次的加载数据----------------------------------参考示例ajax加载数据
+	$.ajax({url : "${base}/businessAction/spv_mixed_data", 
+			data:$("#search_spv_form").serialize()+"&amp;divWidth="+bodyW+"&amp;divHeight="+bodyH,
+			async	: false,		//false为同步
+			dataType: 'json',
+			success	: function(obj){
+				network_json.data.nodes = obj.nodes;
+				network_json.data.edges = obj.edges;
+			}
+	});*/
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="数据的全局配置(network)---XML格式(graphml)"></a>数据的全局配置(network)---XML格式(.graphml)</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>XML格式:(示例network_xml.graphml)</p>
+<pre>	&lt;graphml&gt;
+		  &lt;!-- 设置自定义属性*******节点******* --&gt;
+		  &lt;key id="label"    for="node" attr.name="label"    attr.type="string"/&gt;&lt;!--显示标签 --&gt;
+		  &lt;key id="shape"    for="node" attr.name="shape"    attr.type="string"&gt;&lt;default&gt;RECTANGLE&lt;/default&gt;&lt;/key&gt;&lt;!--节点形状,默认矩形RECTANGLE --&gt;
+		  &lt;key id="weight"   for="node" attr.name="weight"   attr.type="int"&gt;&lt;default&gt;48&lt;/default&gt;&lt;/key&gt;&lt;!--节点尺寸,默认48px --&gt;
+		  &lt;key id="imgtype"  for="node" attr.name="imgtype"  attr.type="string"/&gt;&lt;!--节点图片 --&gt;
+		  &lt;key id="tooltip"  for="node" attr.name="tooltip"  attr.type="string"&gt;&lt;default&gt;&lt;/default&gt;&lt;/key&gt;&lt;!--悬停提示 --&gt;
+		  &lt;key id="x"   	 for="node" attr.name="x"   	 attr.type="int"/&gt;&lt;!-- X坐标 --&gt;
+		  &lt;key id="y"        for="node" attr.name="y"   	 attr.type="int"/&gt;&lt;!-- Y坐标 --&gt;
+		  &lt;!-- 设置自定义属性*******连线******* --&gt;
+		  &lt;key id="label"    for="edge" attr.name="label"    attr.type="string"/&gt;&lt;!--显示标签 --&gt;
+		  &lt;key id="weight"   for="edge" attr.name="weight"   attr.type="int"&gt;&lt;default&gt;1&lt;/default&gt;&lt;/key&gt;&lt;!--连线尺寸,默认1px --&gt;
+		  &lt;key id="color"    for="edge" attr.name="color"    attr.type="string"&gt;&lt;default&gt;#c1c1c1&lt;/default&gt;&lt;/key&gt;&lt;!--连线颜色 --&gt;
+		  &lt;key id="tooltip"  for="edge" attr.name="tooltip"  attr.type="string"&gt;&lt;default&gt;&lt;/default&gt;&lt;/key&gt;&lt;!--悬停提示 --&gt;
+		  
+		  &lt;graph edgedefault="undirected"&gt;&lt;!-- 透过这个变量设定连线方向 directed有方向,undirected无方向--&gt;
+			&lt;!-- 设置节点数据 --&gt;
+			&lt;node id="a01"&gt;&lt;data key="label"&gt;A01&lt;/data&gt;&lt;data key="imgtype"&gt;img/node1.png&lt;/data&gt;&lt;data key="x"&gt;100&lt;/data&gt;&lt;data key="y"&gt;100&lt;/data&gt;&lt;/node&gt;
+			&lt;node id="a02"&gt;&lt;data key="label"&gt;A02&lt;/data&gt;&lt;data key="imgtype"&gt;img/node2.png&lt;/data&gt;&lt;data key="x"&gt;200&lt;/data&gt;&lt;data key="y"&gt;200&lt;/data&gt;&lt;/node&gt;
+			&lt;node id="a03"&gt;&lt;data key="label"&gt;A03&lt;/data&gt;&lt;data key="imgtype"&gt;img/node3.png&lt;/data&gt;&lt;data key="x"&gt;300&lt;/data&gt;&lt;data key="y"&gt;300&lt;/data&gt;&lt;/node&gt;
+			&lt;node id="a04"&gt;&lt;data key="label"&gt;A04&lt;/data&gt;&lt;data key="imgtype"&gt;img/node4.png&lt;/data&gt;&lt;data key="x"&gt;400&lt;/data&gt;&lt;data key="y"&gt;400&lt;/data&gt;&lt;/node&gt;
+			&lt;node id="a05"&gt;&lt;data key="label"&gt;A05&lt;/data&gt;&lt;data key="imgtype"&gt;img/node5.png&lt;/data&gt;&lt;data key="x"&gt;500&lt;/data&gt;&lt;data key="y"&gt;500&lt;/data&gt;&lt;/node&gt;
+			&lt;!-- 设置连线数据 --&gt;
+			&lt;edge target="a01" source="a02" directed="false"&gt;&lt;data key="weight"&gt;2&lt;/data&gt;&lt;data key="label"&gt;a01 (15) a02&lt;/data&gt;&lt;/edge&gt;
+			&lt;edge target="a02" source="a03" directed="true" &gt;&lt;data key="weight"&gt;3&lt;/data&gt;&lt;data key="label"&gt;a02 (15) a03&lt;/data&gt;&lt;/edge&gt;
+			&lt;edge target="a03" source="a04" directed="false"&gt;&lt;data key="weight"&gt;4&lt;/data&gt;&lt;data key="label"&gt;a03 (15) a04&lt;/data&gt;&lt;/edge&gt;
+			&lt;edge target="a04" source="a05" directed="true" &gt;&lt;data key="weight"&gt;5&lt;/data&gt;&lt;data key="label"&gt;a04 (15) a05&lt;/data&gt;&lt;/edge&gt;
+		  &lt;/graph&gt;
+	&lt;/graphml&gt;
+</pre>
+<p>当我们完成上面小节的</p>
+<pre>	//第一次绘制加载样式和配置
+	vis.draw(draw_options);
+</pre>
+<p>随后即用下面的示例,将xml数据绘制到topo</p>
+<pre>	//---------------------------------初始化拓扑图的数据---------------------------------------------//
+	//参考示例ajax加载xml数据
+	$.ajax({url : "xml/network_xml.graphml",
+			async	: false,		//false为同步
+			dataType: 'xml',
+			success	: function(obj){
+				var dt;
+				if (typeof dt !== "string") {
+					if (window.ActiveXObject) {
+						dt = obj.xml; //ie
+					} else {
+						dt = obj.children[0].outerHTML; //火狐
+					}
+				}
+				draw_options.network = dt;
+				//第二次绘制加载数据
+				vis.draw(draw_options);
+			}
+	});
+</pre>
+<p></p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>open free</b><em>Verify by:</em><b>open free</b></div>
+</body>
+</html>

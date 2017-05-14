@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<title>第一步创建java对象</title><link href="../zdoc.css" rel="stylesheet" type="text/css"/>
+</head>
+<body><a name="top"></a>
+<div class="zdoc_header">第一步创建java对象</div>
+<div class="zdoc_author"><em>By:</em><b>tianming</b></div>
+<div class="zdoc_body">
+<ul class="zdoc_index_table">
+<li>
+<div><span class="num">1</span><a href="#新建一个java对象">新建一个java对象</a></div>
+</li>
+<li>
+<div><span class="num">2</span><a href="#给java对象设置验证">给java对象设置验证</a></div>
+</li>
+<li>
+<div><span class="num">3</span><a href="#给java对象字段设置模糊查询">给java对象字段设置模糊查询</a></div>
+</li>
+<li>
+<div><span class="num">4</span><a href="#小结">小结</a></div>
+</li>
+</ul>
+<div class="hr"><b></b></div>
+<h1><a name="新建一个java对象"></a>新建一个java对象</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>当我们去完成一个业务功能(创建表格的增删改查)时,第一步就是创建一个java对象了,使用模板组件也是一样的,现在跟着思路一步一步进行,首先研发经理指定或者我们自己选定好目录</p>
+<p>在/data目录下新建java对象如下:</p>
+<pre>@Table("数据库表名")
+public class TableExampleObject implements Serializable {
+
+	/**
+	 * 序列化ID
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	......
+}
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="给java对象设置验证"></a>给java对象设置验证</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>java对象上设置权限可以参考示例代码,在TableExampleObject示例类中涵盖了CUPID支持的所有验证写法,可以直接copy使用</p>
+<p>技巧补充: 当我们开始创建java对象的时候,可以先不着急设置验证,当最后的页面跑起来后,在回过头来添加验证.</p>
+<p>在此列举几个常用验证:</p>
+<pre>/**
+ * required	必填字段
+ */
+@Validations(rules={
+	@ValidateType( type=Type.required,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.required")
+})
+@Column
+private String required;
+
+/**
+ * 字符串类型
+ * 		requiredIfChecked	当form中某一checkbox或radio被选中时才必填
+ * 		requiredIfFilled	填写依赖必填，当form中某一输入元素的值不为空时才必填
+ * 		requiredIfEqualTo	另一字段值等于某个值时必填
+ * 
+ * 	解释:
+ * 		parameters="name=checked" 前台页面需要一个&lt;input type="..." name="checked" /&gt;对应才能验证
+ * 
+ *  注意:
+ *  	requiredIfChecked 经测试,不好用,不勾选复选框返回null,勾选返回"no",并且验证无效
+ *  	关于checkbox radio的取值,建议使用jquery.val()的方式,更灵活
+ */
+@Validations(rules={
+	@ValidateType( type=Type.requiredIfChecked,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.required",parameters={"name=requiredIfChecked"})
+	//@ValidateType( type=Type.requiredIfFilled,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.required",parameters={"name=requiredIfChecked"})
+	//@ValidateType( type=Type.requiredIfEqualTo,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.compare",parameters={"name=requiredIfChecked","521"})
+})
+@Column
+private String requiredIfChecked;
+
+
+/**
+ * 字符串类型
+ * 		minlength 最小长度,包括等于
+ * 		maxlength 最大长度,包括等于
+ * 		rangelength 参数一&lt;= X &lt;=参数二
+ */
+@Validations(rules={
+	@ValidateType( type=Type.minlength,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.minlength",parameters={"11"})
+	//@ValidateType( type=Type.maxlength,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.maxlength",parameters={"22"})
+	//@ValidateType( type=Type.rangelength,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.rangelength",parameters={"11","22"})
+})
+@Column
+private String minlength;
+
+
+/**
+ * 字符串类型
+ *  	email 	邮箱地址
+ *		url 	URL地址
+ *		ip		IP地址 格式应该为xxx.xxx.xxx.xxx，其中xxx为0-255的整数
+ *		ipv6	
+ *		mac		MAC地址，格式应该为xx-xx-xx-xx-xx-xx，其中x为0-9a-f的数值，不区分大小写；其中-也可以使用:
+ */
+@Validations(rules={
+	@ValidateType( type=Type.email,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.email")
+	//@ValidateType( type=Type.url,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.url"),
+	//@ValidateType( type=Type.ip,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.ip"),
+	//@ValidateType( type=Type.ipv6,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.ipv6"),
+	//@ValidateType( type=Type.mac,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.mac")
+})
+@Column
+private String email;
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="给java对象字段设置模糊查询"></a>给java对象字段设置模糊查询</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>模糊查询地址: /java/main/com/venustech/tsoc/cupid/traffic/util/fuzzy/FuzzyQuery.java</p>
+<p>模糊查询需要在字段名上配置@FuzzyField字段,如果想让哪个字段支持模糊查询,就在哪个字段加上@FuzzyField</p>
+<p>如果没有在字段上设置@FuzzyField,那么将全字段查询</p>
+<p>例:</p>
+<pre>/**
+ * required	必填字段
+ */
+@Validations(rules={
+	@ValidateType( type=Type.required,resource=true, bundle="i18n_main",errorMsg="text.ui.validate.messages.required")
+})
+@Column
+@FuzzyField
+private String required;
+</pre>
+<p></p>
+<div class="hr"><b></b></div>
+<h1><a name="小结"></a>小结</h1>
+<div style="float:right;"><a href="#top">Top</a></div>
+<p>看到这里,java对象估计是创建完成了,那大家可以进行下一节controller的创建了.</p>
+</div>
+<div class="zdoc_footer"><em>By:</em><b>tianming</b></div>
+</body>
+</html>
